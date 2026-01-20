@@ -20,7 +20,15 @@
       "bcrypt",
       "prisma",
       "@prisma/client",
-      "@prisma/engines"
+      "@prisma/engines",
+      "@nestjs/core"
+    ],
+    "allowedBuildScripts": [
+      "bcrypt",
+      "prisma",
+      "@prisma/client",
+      "@prisma/engines",
+      "@nestjs/core"
     ]
   }
 }
