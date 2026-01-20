@@ -41,6 +41,7 @@ WORKDIR /app
 COPY --from=builder /app/apps/server/dist ./apps/server/dist
 COPY --from=builder /app/apps/server/prisma ./apps/server/prisma
 COPY --from=builder /app/apps/server/package.json ./apps/server/package.json
+COPY --from=builder /app/apps/server/prisma.config.ts ./apps/server/prisma.config.ts
 
 # Production node_modules 복사 (모노레포 구조 유지)
 COPY --from=builder /app/node_modules ./node_modules
