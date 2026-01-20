@@ -1,0 +1,10 @@
+node_modules
+.git
+.github
+.next
+dist
+coverage
+.env*
+.claude
+playwright-report
+test-results
