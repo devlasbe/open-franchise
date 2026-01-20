@@ -19,14 +19,14 @@ RUN pnpm build
 
 FROM base AS runner
 WORKDIR /app
-RUN npm install -g pm2
 
 COPY --from=builder /app/apps/server/dist ./dist
 COPY --from=builder /app/apps/server/package.json ./
-COPY --from=builder /app/apps/server/node_modules ./node_modules
 COPY --from=builder /app/apps/server/prisma ./prisma
-COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
-COPY --from=builder /app/node_modules/@prisma ./node_modules/@prisma
+
+RUN npm install --omit=dev
+RUN npx prisma generate
+RUN npm install -g pm2
 
 EXPOSE 3000
 CMD ["/bin/sh", "-c", "npx prisma migrate deploy && npm run pm2:prod"]
