@@ -24,7 +24,7 @@ jobs:
           node-version: lts/*
 
       - name: Build the Dockerfile
-        run: docker build -t ${{ env.DOCKER_IMAGE_TAG }} --build-arg="NEXT_PUBLIC_API_URL_OP=${{ secrets.NEXT_PUBLIC_API_URL_OP }}" .
+        run: docker build -t ${{ env.DOCKER_IMAGE_TAG }} --build-arg="NEXT_PUBLIC_API_URL_PROD=${{ secrets.NEXT_PUBLIC_API_URL_PROD }}" .
 
       - name: Run Docker Container
         run: docker run -d --name test -p 3000:3000 ${{ env.DOCKER_IMAGE_TAG }}
