@@ -1,0 +1,26 @@
+{
+  "name": "open-franchise",
+  "version": "1.0.0",
+  "private": true,
+  "packageManager": "pnpm@10.6.5",
+  "scripts": {
+    "dev": "pnpm --parallel -r run dev",
+    "dev:server": "pnpm --filter @open-franchise/server run start:dev",
+    "dev:web": "pnpm --filter @open-franchise/web run dev",
+    "build": "pnpm -r run build",
+    "build:server": "pnpm --filter @open-franchise/server run build",
+    "build:web": "pnpm --filter @open-franchise/web run build",
+    "lint": "pnpm -r run lint",
+    "clean": "pnpm -r exec rm -rf node_modules dist .next",
+    "prisma:generate": "pnpm --filter @open-franchise/server run prisma:generate",
+    "prisma:migrate:dev": "pnpm --filter @open-franchise/server run migrate:dev"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "bcrypt",
+      "prisma",
+      "@prisma/client",
+      "@prisma/engines"
+    ]
+  }
+}

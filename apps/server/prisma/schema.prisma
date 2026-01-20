@@ -1,0 +1,192 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  relationMode = "prisma"
+}
+
+model Brand {
+  // 브랜드명
+  brandNm String @id @map("brand_nm")
+  // 브랜드관리번호
+  brandMnno String @map("brand_mnno")
+  // 가맹본부관리번호
+  jnghdqrtrsMnno String @map("jnghdqrtrs_mnno")
+  // 사업자등록번호
+  brno String @map("brno")
+  // 법인등록번호
+  crno String? @map("crno")
+  // 가맹본부대표자명
+  jnghdqrtrsRprsvNm String @map("jnghdqrtrs_rprsv_nm")
+  // 업종대분류명
+  indutyLclasNm String @map("induty_lclas_nm")
+  // 업종중분류명
+  indutyMlsfcNm String @map("induty_mlsfc_nm")
+  // 가맹사업기준년도
+  jngBizCrtraYr String @map("jng_biz_crtra_yr")
+  // 가맹사업개시일자
+  jngBizStrtDate String? @map("jng_biz_strt_date")
+  // 주요상품명
+  majrGdsNm String? @map("majr_gds_nm")
+
+  statistics Statistic[]
+  @@index([brandNm], name: "franchise_brand_year_index")
+}
+
+model Category {
+  indutyLclasNm String @map("induty_lclas_nm")
+  indutyMlsfcNm String @map("induty_mclas_nm")
+
+  @@id([indutyLclasNm,indutyMlsfcNm])
+}
+
+model Statistic {
+  // 브랜드명
+  brandNm String @map("brand_nm")
+  // 법인명
+  corpNm String @map("corp_nm")
+  // 대분류
+  indutyLclasNm String @map("induty_lclas_nm")
+  // 중분류
+  indutyMlsfcNm String @map("induty_mclas_nm")
+  //기준년도
+  yr String
+  // 가맹점수
+  frcsCnt Int @map("frcs_cnt")
+  // 신규가맹점등록수
+  newFrcsRgsCnt Int @map("new_frcs_rgs_cnt")
+  //계약종료수
+  ctrtEndCnt Int @map("ctrt_end_cnt")
+  // 계약해지수
+  ctrtCncltnCnt Int @map("ctrt_cncltn_cnt")
+  // 명의변경수
+  nmChgCnt Int @map("nm_chg_cnt")
+  // 평균매출금액
+  avrgSlsAmt Int @map("avrg_sls_amt")
+  // 면적단위평균매출금액
+  arUnitAvrgSlsAmt Int @map("ar_unit_avrg_sls_amt")
+
+  brand Brand? @relation(fields: [brandNm], references: [brandNm])
+  startup Startup? @relation(fields: [brandNm], references: [brandNm], map: "custom_statistic_brand_fk")
+  @@id([brandNm, yr])
+  @@index([brandNm,yr], name:"brand_name_year_index")
+}
+
+model Startup {
+  // 브랜드명
+  brandNm String @id @map("brand_nm")
+  // 법인명
+  corpNm String  @map("corp_nm")
+  // 기준년도
+  yr String
+  // 업종대분류명
+  indutyLclasNm String @map("induty_lclas_nm")
+  // 업종중분류명
+  indutyMlsfcNm String @map("induty_mclas_nm")
+  // 가맹금액
+  jngBzmnJngAmt Int @map("jng_bzmn_jng_amt")
+  // 교육금액
+  jngBzmnEduAmt Int @map("jng_bzmn_edu_amt")
+  // 기타금액
+  jngBzmnEtcAmt Int @map("jng_bzmn_etc_amt")
+  // 보증금액
+  jngBzmnAssrncAmt Int @map("jng_bzmn_assrnc_amt")
+  // 합계금액
+  smtnAmt Int @map("smtn_amt")
+
+  Statistic Statistic[]
+  @@index([brandNm,yr],name:"start_up_brand_name_year_index")
+}
+
+model Interior {
+  // 브랜드명
+  brandNm String @map("brand_nm")
+  // 화폐단위코드명
+  crrncyUnitCdNm String @map("crrncy_unit_cd_nm")
+  // 가맹사업기준년도
+  jngBizCrtraYr String? @map("jng_biz_crtra_yr")
+  // 브랜드관리번호
+  brandMnno String @id @map("brand_mnno")
+  // 가맹본부관리번호
+  jnghdqrtrsMnno String? @map("jnghdqrtrs_mnno")
+  // 업종대분류명
+  indutyLclasNm String @map("induty_lclas_nm")
+  // 업종중분류명
+  indutyMlsfcNm String @map("induty_mlsfc_nm")
+  // 단위면적인테리어금액범위값 (편차 5%)
+  unitArIntrrAmtScopeVal String? @map("unit_ar_intrr_amt_scope_val")
+  // 점포기준면적
+  storCrtraAr Int? @map("stor_crtra_ar")
+  // 인테리어금액범위값 (편차 5%)
+  intrrAmtScopeVal String? @map("intrr_amt_scope_val")
+
+  @@index([brandNm])
+}
+
+model Head {
+  // 홈페이지주소
+  hmpgUrladr String? @map("hmpg_urladr")
+  // 지역명
+  areaNm String @map("area_nm")
+  // 가맹사업기준년도
+  jngBizCrtraYr String @map("jng_biz_crtra_yr")
+  // 가맹본부관리번호
+  jnghdqrtrsMnno String @id @map("jnghdqrtrs_mnno")
+  // 가맹본부 상호명
+  jnghdqrtrsConmNm String @map("jnghdqrtrs_conm_nm")
+  // 사업자등록번호
+  brno String @map("brno")
+  // 법인등록번호
+  crno String? @map("crno")
+  // 개인법인구분코드 (10: 개인, 11: 법인)
+  indvdlCorpSeCd String @map("indvdl_corp_se_cd")
+  // 사업자등록일자
+  bzmnRgsDate String @map("bzmn_rgs_date")
+  // 법인등기일자
+  corpRgDate String? @map("corp_rg_date")
+  // 가맹본부대표전화번호
+  jnghdqrtrsRprsTelno String? @map("jnghdqrtrs_rprs_telno")
+  // 가맹본부대표팩스번호
+  jnghdqrtrsRprsFxno String? @map("jnghdqrtrs_rprs_fxno")
+  // 가맹본부대표자명
+  jnghdqrtrsRprsvNm String @map("jnghdqrtrs_rprsv_nm")
+  // 가맹본부구우편번호
+  jnghdqrtrsOzip String? @map("jnghdqrtrs_ozip")
+  // 소재지주소
+  lctnAddr String? @map("lctn_addr")
+  // 소재지상세주소
+  lctnDaddr String? @map("lctn_daddr")
+  // 브랜드수
+  brandCnt Int @map("brand_cnt")
+  // 계열회사수
+  affltsCnt Int @map("afflts_cnt")
+  // 가맹기관명
+  jngInstNm String @map("jng_inst_nm")
+  // 기업규모명
+  entScaleNm String @map("ent_scale_nm")
+
+  @@index([jnghdqrtrsMnno])
+}
+
+model RejectedBrand {
+  // 브랜드명
+  brandNm String @id @map("brand_nm")
+
+  @@index([brandNm])
+}
+
+enum UserRole {
+  USER
+  ADMIN
+}
+
+model User {
+  id            String    @id @default(uuid())
+  email         String    @unique
+  password      String
+  name          String
+  role          UserRole  @default(USER)
+  createdAt     DateTime  @default(now()) @map("created_at")
+}
