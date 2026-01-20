@@ -1,0 +1,55 @@
+# Dependencies
+node_modules
+.pnpm-store
+
+# Build outputs (server dist는 포함해야 함)
+.next
+coverage
+
+# Git
+.git
+.gitignore
+.github
+
+# Development
+.vscode
+.idea
+*.log
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Documentation
+*.md
+
+# Media files
+*.jpg
+*.png
+*.svg
+*.gif
+*.ico
+
+# Tests
+test/
+tests/
+__tests__
+coverage/
+.nyc_output
+*.spec.ts
+*.test.ts
+
+# Web app (server 빌드할 때는 필요없음)
+apps/web
+
+# Misc
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
