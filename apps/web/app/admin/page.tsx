@@ -7,7 +7,14 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table';
 import { Brand, RejectedBrand } from '@/types/apiTypes';
 
 export default function AdminPage() {
@@ -117,17 +124,31 @@ export default function AdminPage() {
         <CardContent className="space-y-4">
           <div className="flex items-center gap-4">
             <label className="font-bold w-20">기준 연도:</label>
-            <Input type="number" value={year} onChange={(e) => setYear(e.target.value)} className="w-32" />
+            <Input
+              type="number"
+              value={year}
+              onChange={(e) => setYear(e.target.value)}
+              className="w-32"
+            />
           </div>
 
           <div className="flex gap-4 flex-wrap">
-            <Button onClick={() => handleApiCall('브랜드', AdminService.callBrand)} disabled={loading}>
+            <Button
+              onClick={() => handleApiCall('브랜드', AdminService.callBrand)}
+              disabled={loading}
+            >
               브랜드 정보 수집
             </Button>
-            <Button onClick={() => handleApiCall('통계', AdminService.callStatistic)} disabled={loading}>
+            <Button
+              onClick={() => handleApiCall('통계', AdminService.callStatistic)}
+              disabled={loading}
+            >
               통계 정보 수집
             </Button>
-            <Button onClick={() => handleApiCall('창업', AdminService.callStartup)} disabled={loading}>
+            <Button
+              onClick={() => handleApiCall('창업', AdminService.callStartup)}
+              disabled={loading}
+            >
               창업 정보 수집
             </Button>
           </div>
@@ -179,7 +200,11 @@ export default function AdminPage() {
                       <TableCell>{brand.brandNm}</TableCell>
                       <TableCell>{brand.indutyMlsfcNm}</TableCell>
                       <TableCell className="text-right">
-                        <Button variant="destructive" size="sm" onClick={() => handleAddRejection(brand.brandNm)}>
+                        <Button
+                          variant="destructive"
+                          size="sm"
+                          onClick={() => handleAddRejection(brand.brandNm)}
+                        >
                           차단
                         </Button>
                       </TableCell>
@@ -212,7 +237,11 @@ export default function AdminPage() {
                     <TableRow key={item.brandNm}>
                       <TableCell>{item.brandNm}</TableCell>
                       <TableCell className="text-right">
-                        <Button variant="outline" size="sm" onClick={() => handleDeleteRejection(item.brandNm)}>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => handleDeleteRejection(item.brandNm)}
+                        >
                           해제
                         </Button>
                       </TableCell>

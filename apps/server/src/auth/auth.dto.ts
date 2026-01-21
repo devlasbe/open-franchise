@@ -27,6 +27,4 @@ export class LogoutRes {
 
 export class LogoutResponseDto extends TypeUtil.getSuccessResponse(LogoutRes) {}
 
-export class GetProfileResponseDto extends TypeUtil.getSuccessResponse(
-  UserWithoutPassword,
-) {}
+export class GetProfileResponseDto extends TypeUtil.getSuccessResponse(UserWithoutPassword) {}

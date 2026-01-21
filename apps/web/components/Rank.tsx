@@ -1,9 +1,15 @@
-import { StatisticService } from "@/services/statistic";
-import { Card } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
-import { UnitUtil } from "@/utils/unit";
-import { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext } from "@/components/ui/carousel";
-import Link from "next/link";
+import { StatisticService } from '@/services/statistic';
+import { Card } from '@/components/ui/card';
+import { Separator } from '@/components/ui/separator';
+import { UnitUtil } from '@/utils/unit';
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselPrevious,
+  CarouselNext,
+} from '@/components/ui/carousel';
+import Link from 'next/link';
 
 type RankProps = {
   category: string;
@@ -15,8 +21,8 @@ export default async function Rank({ category, title }: RankProps) {
     category,
     pageNo: 1,
     pageSize: 10,
-    orderCol: "frcsCnt",
-    orderSort: "desc",
+    orderCol: 'frcsCnt',
+    orderSort: 'desc',
   });
 
   return (
@@ -29,7 +35,11 @@ export default async function Rank({ category, title }: RankProps) {
           <CarouselContent>
             {!!chickenList?.payload.length &&
               chickenList.payload.map((item, idx) => (
-                <CarouselItem key={`main-chicken-${item.brandNm}`} id="rank-item" className="md:basis-1/3 lg:basis-1/5">
+                <CarouselItem
+                  key={`main-chicken-${item.brandNm}`}
+                  id="rank-item"
+                  className="md:basis-1/3 lg:basis-1/5"
+                >
                   <div className="p-1">
                     <Card className="p-4 hovered-button">
                       <Link href={`/brand/${item.brandNm}`}>
@@ -37,14 +47,19 @@ export default async function Rank({ category, title }: RankProps) {
                         <p className="text-caption1 text-neutral-400 overflow-hidden whitespace-nowrap text-ellipsis">
                           {item.corpNm}
                         </p>
-                        <p className="text-subtitle2 overflow-hidden whitespace-nowrap text-ellipsis">{item.brandNm}</p>
+                        <p className="text-subtitle2 overflow-hidden whitespace-nowrap text-ellipsis">
+                          {item.brandNm}
+                        </p>
                         <Separator className="my-2" />
-                        <Value label="점포수" value={item.frcsCnt.toLocaleString() + "개"} />
+                        <Value label="점포수" value={item.frcsCnt.toLocaleString() + '개'} />
                         <Value
                           label="창업금액"
-                          value={UnitUtil.formatNumberToKorean(item?.startup?.smtnAmt ?? 0) + "원"}
+                          value={UnitUtil.formatNumberToKorean(item?.startup?.smtnAmt ?? 0) + '원'}
                         />
-                        <Value label="평균매출" value={UnitUtil.formatNumberToKorean(item.avrgSlsAmt) + "원"} />
+                        <Value
+                          label="평균매출"
+                          value={UnitUtil.formatNumberToKorean(item.avrgSlsAmt) + '원'}
+                        />
                       </Link>
                     </Card>
                   </div>

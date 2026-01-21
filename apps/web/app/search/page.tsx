@@ -1,6 +1,6 @@
-import FetchBoundary from "@/components/errorBoundary/FetchBoundary";
-import SearchLayout from "./SearchLayout";
-import { SeoUtil } from "@/utils/seo";
+import FetchBoundary from '@/components/errorBoundary/FetchBoundary';
+import SearchLayout from './SearchLayout';
+import { SeoUtil } from '@/utils/seo';
 
 export async function generateMetadata() {
   const metadata = SeoUtil.metadata(`검색결과`);

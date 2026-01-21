@@ -19,7 +19,7 @@ export class CategoryService {
     const response = await this.brandService.findAll();
     const uniqueArray = Array.from(
       new Set(
-        response.map(({ indutyLclasNm, indutyMlsfcNm, ...rest }) =>
+        response.map(({ indutyLclasNm, indutyMlsfcNm, ..._rest }) =>
           JSON.stringify({ indutyLclasNm, indutyMlsfcNm }),
         ),
       ),

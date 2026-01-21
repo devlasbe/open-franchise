@@ -1,11 +1,4 @@
-import {
-  Controller,
-  Post,
-  UseGuards,
-  Request,
-  Response,
-  Get,
-} from '@nestjs/common';
+import { Controller, Post, UseGuards, Request, Response, Get } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import {
   GetProfileResponseDto,
@@ -13,13 +6,7 @@ import {
   LoginResponseDto,
   LogoutResponseDto,
 } from './auth.dto';
-import {
-  ApiOperation,
-  ApiBody,
-  ApiResponse,
-  ApiBearerAuth,
-  ApiOkResponse,
-} from '@nestjs/swagger';
+import { ApiOperation, ApiBody, ApiResponse, ApiBearerAuth, ApiOkResponse } from '@nestjs/swagger';
 import { UserWithoutPassword } from 'src/users/users.entity';
 import { LocalAuthGuard } from './guards/LocalAuthGuard';
 import { Response as ExpressResponse } from 'express';
@@ -64,10 +51,7 @@ export class AuthController {
     description: '인증 실패',
   })
   @UseGuards(LocalAuthGuard)
-  async login(
-    @Request() req: { user: UserWithoutPassword },
-    @Response() res: ExpressResponse,
-  ) {
+  async login(@Request() req: { user: UserWithoutPassword }, @Response() res: ExpressResponse) {
     const { accessToken } = this.authService.generateToken(req.user);
 
     res.cookie('accessToken', accessToken, {

@@ -1,7 +1,7 @@
-import Icons from "@/assets/icons/Icons";
-import { GitHubLogoIcon } from "@radix-ui/react-icons";
-import { MailIcon } from "lucide-react";
-import Image from "next/image";
+import Icons from '@/assets/icons/Icons';
+import { GitHubLogoIcon } from '@radix-ui/react-icons';
+import { MailIcon } from 'lucide-react';
+import Image from 'next/image';
 
 export default function Footer() {
   return (
@@ -9,8 +9,9 @@ export default function Footer() {
       <div className="flex flex-col items-center sm:items-start gap-4">
         <Image alt="logo-image" src="/open-franchise-logo-v-gray.png" width={120} height={30} />
         <p className="whitespace-pre text-wrap text-caption1 sm:text-body text-center sm:text-start text-neutral-300">
-          공정거래위원회의 가맹사업 정보공개서를 기반으로 창업 전,{"\n"}프랜차이즈 본사 정보, 브랜드의 매출, 가맹점 수,
-          인테리어 금액, 창업 비용 정보를 편리하게 확인할 수 있습니다.{" "}
+          공정거래위원회의 가맹사업 정보공개서를 기반으로 창업 전,{'\n'}프랜차이즈 본사 정보,
+          브랜드의 매출, 가맹점 수, 인테리어 금액, 창업 비용 정보를 편리하게 확인할 수
+          있습니다.{' '}
         </p>
         <p className="whitespace-pre text-wrap text-caption1 sm:text-body text-center sm:text-start text-neutral-300">
           불편하신 사항이나 추가적인 기능을 원하신다면 아래 메일로 연락 바랍니다.
@@ -31,10 +32,18 @@ export default function Footer() {
         >
           <Icons.Portfolio fill="#a3a3a3" width={20} height={20} />
         </a>
-        <a className="cursor-pointer hover:opacity-50" href="https://lasbe.tistory.com/" target="_blank">
+        <a
+          className="cursor-pointer hover:opacity-50"
+          href="https://lasbe.tistory.com/"
+          target="_blank"
+        >
           <Icons.Blog fill="#a3a3a3" width={20} height={20} />
         </a>
-        <a className="cursor-pointer hover:opacity-50" href="https://github.com/devlasbe" target="_blank">
+        <a
+          className="cursor-pointer hover:opacity-50"
+          href="https://github.com/devlasbe"
+          target="_blank"
+        >
           <GitHubLogoIcon color="#A3A3A3" width={20} height={20} />
         </a>
       </div>

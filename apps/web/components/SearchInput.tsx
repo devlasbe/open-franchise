@@ -1,15 +1,15 @@
-"use client";
+'use client';
 
-import { SearchIcon } from "lucide-react";
-import { useMemo, useState } from "react";
-import _ from "lodash";
-import { Brand } from "@/types/apiTypes";
-import { BrandService } from "@/services/brand";
-import { useRouter } from "next/navigation";
-import { closeDialog } from "@/components/ui/alert-dialog";
+import { SearchIcon } from 'lucide-react';
+import { useMemo, useState } from 'react';
+import _ from 'lodash';
+import { Brand } from '@/types/apiTypes';
+import { BrandService } from '@/services/brand';
+import { useRouter } from 'next/navigation';
+import { closeDialog } from '@/components/ui/alert-dialog';
 
 export default function SearchInput() {
-  const [name, setName] = useState("");
+  const [name, setName] = useState('');
   const [brandList, setBrandList] = useState<Brand[]>([]);
   const [isFocus, setIsFocus] = useState(false);
   const router = useRouter();
@@ -44,7 +44,7 @@ export default function SearchInput() {
         placeholder="궁금했던 브랜드 검색"
         onChange={debouncedChange}
         onKeyDown={(e) => {
-          if (e.key === "Enter" && name) handleChangePath(`/search?name=${name}`);
+          if (e.key === 'Enter' && name) handleChangePath(`/search?name=${name}`);
         }}
       />
       <button onClick={() => handleChangePath(`/search?name=${name}`)}>

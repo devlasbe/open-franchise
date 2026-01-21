@@ -1,24 +1,7 @@
-import {
-  Body,
-  Controller,
-  Get,
-  NotFoundException,
-  Param,
-  Post,
-  UseGuards,
-} from '@nestjs/common';
+import { Body, Controller, Get, NotFoundException, Param, Post, UseGuards } from '@nestjs/common';
 import { UsersService } from './users.service';
-import {
-  ApiOperation,
-  ApiResponse,
-  ApiTags,
-} from '@nestjs/swagger';
-import {
-  CreateUserReq,
-  CreateUserRes,
-  FindUserAllRes,
-  FindUserByIdRes,
-} from './users.dto';
+import { ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { CreateUserReq, CreateUserRes, FindUserAllRes, FindUserByIdRes } from './users.dto';
 import { AdminAuthGuard } from 'src/auth/guards/AdminAuthGuard';
 
 @Controller('users')

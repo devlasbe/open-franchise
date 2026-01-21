@@ -39,7 +39,9 @@ export default async function RootLayout({
         <AuthProvider initialUser={user}>
           <Analytics />
           <div className="flex justify-center w-full min-h-dvh">
-            <main className="flex max-w-screen-xl w-full min-h-dvh pt-20 pb-8 px-2 xl:px-0 bg-white">{children}</main>
+            <main className="flex max-w-screen-xl w-full min-h-dvh pt-20 pb-8 px-2 xl:px-0 bg-white">
+              {children}
+            </main>
           </div>
           <Header />
           <Footer />

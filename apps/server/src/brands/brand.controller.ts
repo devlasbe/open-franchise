@@ -1,20 +1,6 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  Param,
-  Post,
-  Query,
-  UseGuards,
-} from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Query, UseGuards } from '@nestjs/common';
 import { BrandService } from './brand.service';
-import {
-  ApiBearerAuth,
-  ApiBody,
-  ApiExtraModels,
-  ApiOkResponse,
-} from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiExtraModels, ApiOkResponse } from '@nestjs/swagger';
 import {
   AddRejectedBrandDto,
   GetBrandListReq,

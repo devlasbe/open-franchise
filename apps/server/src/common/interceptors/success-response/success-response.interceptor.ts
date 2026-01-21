@@ -1,18 +1,12 @@
-import {
-  Injectable,
-  NestInterceptor,
-  ExecutionContext,
-  CallHandler,
-  Logger,
-} from '@nestjs/common';
+import { Injectable, NestInterceptor, ExecutionContext, CallHandler, Logger } from '@nestjs/common';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 @Injectable()
-export class SuccessResponseInterceptor<T>
-  implements
-    NestInterceptor<T, { request: string; payload: T; count?: number }>
-{
+export class SuccessResponseInterceptor<T> implements NestInterceptor<
+  T,
+  { request: string; payload: T; count?: number }
+> {
   private readonly logger = new Logger('😀 Success');
 
   intercept(

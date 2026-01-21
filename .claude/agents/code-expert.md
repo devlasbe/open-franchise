@@ -41,10 +41,23 @@ Open Franchise 프로젝트의 코드 작성을 전문적으로 수행하는 에
 - 작업 영역에 맞는 규칙 파일 참조
 - 기존 코드 패턴과 일관성 유지
 
-### 3. 검증
+### 3. 검증 (필수)
 
+코드 작성 완료 후 반드시 lint 검사를 실행합니다:
+
+```bash
+# 전체 lint 검사
+pnpm lint
+
+# 특정 앱만 검사
+pnpm --filter @open-franchise/server lint
+pnpm --filter @open-franchise/web lint
+```
+
+**lint 오류가 있으면 반드시 수정 후 작업을 완료합니다.**
+
+추가 검증:
 - TypeScript 컴파일 오류 확인
-- ESLint 경고 해결
 - 실제 동작 테스트
 
 ## 금지 사항

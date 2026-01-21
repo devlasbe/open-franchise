@@ -1,8 +1,12 @@
-import Chart, { ChartColorProps, ChartTypeProps, ChartYAxisFormatProps } from "@/components/chart/Chart";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import Summary from "@/components/ui/summary";
-import { Statistic } from "@/types/apiTypes";
-import { UnitUtil } from "@/utils/unit";
+import Chart, {
+  ChartColorProps,
+  ChartTypeProps,
+  ChartYAxisFormatProps,
+} from '@/components/chart/Chart';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import Summary from '@/components/ui/summary';
+import { Statistic } from '@/types/apiTypes';
+import { UnitUtil } from '@/utils/unit';
 
 export default function BrandStatistic({ statisticDataList }: { statisticDataList: Statistic[] }) {
   const brandData = statisticDataList?.length ? statisticDataList[0] : null;
@@ -85,54 +89,54 @@ const statisticLayoutList: StatisticLayoutListType[] = [
   {
     line: {
       avrgSlsAmt: {
-        title: "📋 평균매출",
-        label: "평균매출",
-        unit: "원",
-        chart: { type: "bar", xAxis: "yr", color: "0", yAxisFormat: "b" },
+        title: '📋 평균매출',
+        label: '평균매출',
+        unit: '원',
+        chart: { type: 'bar', xAxis: 'yr', color: '0', yAxisFormat: 'b' },
       },
       arUnitAvrgSlsAmt: {
-        title: "📐 면적(평)당 평균매출",
-        label: "면적(평)당 평균매출",
-        unit: "원",
-        chart: { type: "bar", xAxis: "yr", color: "0", yAxisFormat: "m" },
+        title: '📐 면적(평)당 평균매출',
+        label: '면적(평)당 평균매출',
+        unit: '원',
+        chart: { type: 'bar', xAxis: 'yr', color: '0', yAxisFormat: 'm' },
       },
     },
   },
   {
     line: {
       frcsCnt: {
-        title: "🏠 가맹점 수",
-        label: "가맹점 수",
-        unit: "개",
-        chart: { type: "bar", xAxis: "yr", color: "1" },
+        title: '🏠 가맹점 수',
+        label: '가맹점 수',
+        unit: '개',
+        chart: { type: 'bar', xAxis: 'yr', color: '1' },
       },
       newFrcsRgsCnt: {
-        title: "🎉 신규 가맹점 수",
-        label: "신규 가맹점 수",
-        unit: "개",
-        chart: { type: "bar", xAxis: "yr", color: "1" },
+        title: '🎉 신규 가맹점 수',
+        label: '신규 가맹점 수',
+        unit: '개',
+        chart: { type: 'bar', xAxis: 'yr', color: '1' },
       },
     },
   },
   {
     line: {
       ctrtEndCnt: {
-        title: "🎬 계약종료수",
-        label: "계약종료수",
-        unit: "개",
-        chart: { xAxis: "yr", color: "2" },
+        title: '🎬 계약종료수',
+        label: '계약종료수',
+        unit: '개',
+        chart: { xAxis: 'yr', color: '2' },
       },
       ctrtCncltnCnt: {
-        title: "✂️ 계약해지수",
-        label: "계약해지수",
-        unit: "개",
-        chart: { xAxis: "yr", color: "2" },
+        title: '✂️ 계약해지수',
+        label: '계약해지수',
+        unit: '개',
+        chart: { xAxis: 'yr', color: '2' },
       },
       nmChgCnt: {
-        title: "🔄 명의변경수",
-        label: "명의변경수",
-        unit: "개",
-        chart: { xAxis: "yr", color: "2" },
+        title: '🔄 명의변경수',
+        label: '명의변경수',
+        unit: '개',
+        chart: { xAxis: 'yr', color: '2' },
       },
     },
   },

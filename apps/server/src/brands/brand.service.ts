@@ -27,14 +27,7 @@ export class BrandService {
     return { brand, head, isRejectedBrand };
   }
 
-  findByFilter({
-    pageNo,
-    pageSize,
-    category,
-    name,
-    orderCol,
-    orderSort,
-  }: GetBrandListReq) {
+  findByFilter({ pageNo, pageSize, category, name, orderCol, orderSort }: GetBrandListReq) {
     const buildWhereQuery = () => {
       const where: any = {};
       if (name) where.brandNm = { contains: name, mode: 'insensitive' };

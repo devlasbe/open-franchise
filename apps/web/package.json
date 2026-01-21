@@ -6,7 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
+    "lint": "next lint --fix",
     "test:e2e": "playwright test",
     "test:ui": "playwright test --ui",
     "swagger": "npx swagger-typescript-api generate -p http://localhost:3001/swagger-json -o ./types -n apiTypes.ts --no-client"
@@ -42,7 +42,10 @@
     "@types/react-dom": "^18",
     "eslint": "^8",
     "eslint-config-next": "14.2.18",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-prettier": "^5.0.0",
     "postcss": "^8",
+    "prettier": "^3.0.0",
     "tailwindcss": "^3.4.1",
     "typescript": "^5"
   }

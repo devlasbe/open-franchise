@@ -1,5 +1,5 @@
-import { BrandService } from "@/services/brand";
-import { NextResponse } from "next/server";
+import { BrandService } from '@/services/brand';
+import { NextResponse } from 'next/server';
 
 type Route = {
   url: string;
@@ -7,15 +7,15 @@ type Route = {
 };
 
 const formatDate = (date: Date): string => {
-  return date.toISOString().split("T")[0];
+  return date.toISOString().split('T')[0];
 };
 
 const fetchRoutes = async (): Promise<Route[]> => {
   const baseUrl = process.env.NEXT_PUBLIC_DOMAIN;
 
   const staticRoutes: Route[] = [
-    { url: `${baseUrl}/`, priority: "1" },
-    { url: `${baseUrl}/search`, priority: "0.9" },
+    { url: `${baseUrl}/`, priority: '1' },
+    { url: `${baseUrl}/search`, priority: '0.9' },
   ];
 
   const brandRoute: Route[] = [];
@@ -26,8 +26,8 @@ const fetchRoutes = async (): Promise<Route[]> => {
     dataList.forEach((item) =>
       brandRoute.push({
         url: `${baseUrl}/brand/${item.brandNm}`,
-        priority: "0.8",
-      })
+        priority: '0.8',
+      }),
     );
     pageNo++;
   }
@@ -38,11 +38,11 @@ const fetchRoutes = async (): Promise<Route[]> => {
 const generateSitemap = (routes: Route[]) => {
   const escapeXml = (str: string) => {
     return str
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;")
-      .replace(/"/g, "&quot;")
-      .replace(/'/g, "&apos;");
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&apos;');
   };
 
   return `<?xml version="1.0" encoding="UTF-8"?>
@@ -56,9 +56,9 @@ const generateSitemap = (routes: Route[]) => {
           <priority>${priority}</priority>
           <changefreq>weekly</changefreq>
         </url>
-      `
+      `,
         )
-        .join("")}
+        .join('')}
     </urlset>`;
 };
 
@@ -68,7 +68,7 @@ export async function GET() {
 
   return new NextResponse(sitemap, {
     headers: {
-      "Content-Type": "application/xml",
+      'Content-Type': 'application/xml',
     },
   });
 }

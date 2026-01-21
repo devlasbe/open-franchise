@@ -53,21 +53,19 @@ export class InteriorsService {
 
   async findOneByOpenApi(params: { jngBizCrtraYr: string; brandMnno: string }) {
     try {
-      const response = await this.httpService.axiosRef.get<
-        OpenApiResponseDto<Interior>
-      >(this.endPoint, {
-        params: {
-          resultType: 'json',
-          serviceKey: this.key,
-          pageNo: 1,
-          numOfRows: 1,
-          ...params,
+      const response = await this.httpService.axiosRef.get<OpenApiResponseDto<Interior>>(
+        this.endPoint,
+        {
+          params: {
+            resultType: 'json',
+            serviceKey: this.key,
+            pageNo: 1,
+            numOfRows: 1,
+            ...params,
+          },
         },
-      });
-      console.log(
-        `Interior OpenApi -> year: ${params.jngBizCrtraYr}`,
-        response?.data,
       );
+      console.log(`Interior OpenApi -> year: ${params.jngBizCrtraYr}`, response?.data);
       const data = response?.data?.items;
       if (data?.length) return data[0];
     } catch (error) {

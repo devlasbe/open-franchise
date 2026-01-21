@@ -4,9 +4,7 @@ import { PagenationRequest } from 'src/common/dto/pagenation.dto';
 import { IsOptional, IsString } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
-export class GetStatisticListRes extends TypeUtil.getSuccessResponseList(
-  Statistic,
-) {}
+export class GetStatisticListRes extends TypeUtil.getSuccessResponseList(Statistic) {}
 
 export class GetStatisticByFilterReq extends PagenationRequest {
   @IsString()
