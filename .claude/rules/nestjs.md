@@ -1,67 +1,60 @@
 # NestJS 코딩 규칙
 
-## 모듈 구조
+## ⚠️ 필수 규칙
 
-### 표준 모듈 구성
-
-```
-module/
-├── module.module.ts      # 모듈 정의
-├── module.controller.ts  # HTTP 요청 처리
-├── module.service.ts     # 비즈니스 로직
-├── dto/
-│   ├── create-module.dto.ts
-│   └── update-module.dto.ts
-├── entities/
-│   └── module.entity.ts
-└── module.spec.ts        # 테스트
-```
-
-### 모듈 정의
+### 1. `any` 타입 절대 금지
 
 ```typescript
-@Module({
-  imports: [OtherModule],         // 의존 모듈
-  controllers: [MyController],
-  providers: [MyService],
-  exports: [MyService],           // 외부 공개 시
-})
-export class MyModule {}
-```
+// ❌ 금지
+function process(data: any) { ... }
 
-## 컨트롤러
+// ✅ 올바른 방법
+function process(data: BrandResponseDto) { ... }
 
-### 기본 패턴
-
-```typescript
-@ApiTags('brands')
-@Controller('brands')
-export class BrandController {
-  constructor(private readonly brandService: BrandService) {}
-
-  @Get()
-  @ApiOperation({ summary: '목록 조회' })
-  async findAll(@Query() query: FindBrandDto) {
-    return this.brandService.findAll(query);
-  }
-
-  @Get(':id')
-  @ApiOperation({ summary: '단건 조회' })
-  @ApiParam({ name: 'id', description: '브랜드 ID' })
-  async findOne(@Param('id') id: string) {
-    return this.brandService.findOne(id);
-  }
-
-  @Post()
-  @UseGuards(AdminAuthGuard)
-  @ApiOperation({ summary: '생성' })
-  async create(@Body() dto: CreateBrandDto) {
-    return this.brandService.create(dto);
-  }
+// 타입을 모를 경우
+function process(data: unknown) {
+  if (isBrandData(data)) { /* 타입 가드 후 사용 */ }
 }
 ```
 
-### 데코레이터 순서
+### 2. 모든 API에 DTO 필수
+
+```typescript
+// ❌ 금지
+@Post()
+async create(@Body() data: { name: string }) { ... }
+
+// ✅ 올바른 방법
+@Post()
+async create(@Body() dto: CreateBrandDto): Promise<BrandResponseDto> { ... }
+```
+
+### 3. 반환 타입 명시
+
+```typescript
+// ❌ 금지
+async findAll(query: FindBrandDto) { return this.prisma.brand.findMany(); }
+
+// ✅ 올바른 방법
+async findAll(query: FindBrandDto): Promise<Brand[]> { return this.prisma.brand.findMany(); }
+```
+
+## 모듈 구조
+
+```
+module/
+├── module.module.ts
+├── module.controller.ts
+├── module.service.ts
+└── dto/
+    ├── create-module.dto.ts
+    ├── update-module.dto.ts
+    └── module-response.dto.ts
+```
+
+상세 템플릿: `.claude/commands/new-module.md`
+
+## 데코레이터 순서
 
 1. `@ApiTags()` (클래스)
 2. `@Controller()` (클래스)
@@ -69,282 +62,68 @@ export class BrandController {
 4. `@Get()`, `@Post()` 등 (메서드)
 5. `@ApiOperation()`, `@ApiResponse()` (메서드)
 
-## 서비스
+## DTO 작성 규칙
 
-### 기본 패턴
-
-```typescript
-@Injectable()
-export class BrandService {
-  constructor(private readonly prisma: PrismaService) {}
-
-  async findAll(query: FindBrandDto) {
-    const { category, limit = 10, offset = 0 } = query;
-
-    return this.prisma.brand.findMany({
-      where: category ? { category } : undefined,
-      take: limit,
-      skip: offset,
-      orderBy: { createdAt: 'desc' },
-    });
-  }
-
-  async findOne(id: string) {
-    const brand = await this.prisma.brand.findUnique({
-      where: { id },
-    });
-
-    if (!brand) {
-      throw new NotFoundException(`Brand #${id} not found`);
-    }
-
-    return brand;
-  }
-}
-```
-
-### 트랜잭션
+모든 DTO 필드에 필수:
+- `@ApiProperty()` - Swagger 문서화
+- `@IsString()`, `@IsNumber()` 등 - 타입 검증
+- `@IsNotEmpty()`, `@IsOptional()` - 필수/선택 여부
 
 ```typescript
-async createWithRelations(dto: CreateDto) {
-  return this.prisma.$transaction(async (tx) => {
-    const brand = await tx.brand.create({ data: dto.brand });
-    await tx.statistic.createMany({
-      data: dto.statistics.map(s => ({ ...s, brandId: brand.id })),
-    });
-    return brand;
-  });
-}
-```
-
-## DTO
-
-### 요청 DTO
-
-```typescript
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { IsString, IsNotEmpty, IsOptional, IsNumber, Min, Max } from 'class-validator';
-import { Transform, Type } from 'class-transformer';
-
 export class CreateBrandDto {
   @ApiProperty({ description: '브랜드명', example: '치킨마루' })
   @IsString()
   @IsNotEmpty()
   name: string;
-
-  @ApiPropertyOptional({ description: '설명' })
-  @IsString()
-  @IsOptional()
-  description?: string;
-
-  @ApiPropertyOptional({ description: '가맹비', minimum: 0 })
-  @IsNumber()
-  @IsOptional()
-  @Min(0)
-  @Type(() => Number)
-  fee?: number;
 }
 ```
 
-### 쿼리 DTO
-
-```typescript
-export class FindBrandDto {
-  @ApiPropertyOptional({ description: '카테고리' })
-  @IsString()
-  @IsOptional()
-  category?: string;
-
-  @ApiPropertyOptional({ default: 10, maximum: 100 })
-  @IsNumber()
-  @IsOptional()
-  @Min(1)
-  @Max(100)
-  @Type(() => Number)
-  limit?: number = 10;
-
-  @ApiPropertyOptional({ default: 0 })
-  @IsNumber()
-  @IsOptional()
-  @Min(0)
-  @Type(() => Number)
-  offset?: number = 0;
-}
-```
-
-## 예외 처리
-
-### 내장 예외 사용
-
-```typescript
-import {
-  NotFoundException,
-  BadRequestException,
-  UnauthorizedException,
-  ForbiddenException,
-  ConflictException,
-} from '@nestjs/common';
-
-// 404 - 리소스 없음
-throw new NotFoundException('Brand not found');
-
-// 400 - 잘못된 요청
-throw new BadRequestException('Invalid category');
-
-// 401 - 인증 필요
-throw new UnauthorizedException('Please login');
-
-// 403 - 권한 없음
-throw new ForbiddenException('Admin only');
-
-// 409 - 충돌
-throw new ConflictException('Brand already exists');
-```
-
-## 인증/인가
-
-### 가드 적용
-
-```typescript
-// 컨트롤러 전체
-@UseGuards(JwtAuthGuard)
-@Controller('admin')
-export class AdminController {}
-
-// 특정 메서드만
-@Controller('brands')
-export class BrandController {
-  @Get()
-  findAll() {}  // 공개
-
-  @Post()
-  @UseGuards(AdminAuthGuard)
-  create() {}  // 관리자만
-}
-```
-
-### 현재 사용자 접근
-
-```typescript
-@Get('profile')
-@UseGuards(JwtAuthGuard)
-getProfile(@Request() req) {
-  return req.user;  // { id, email, role }
-}
-```
+상세 가이드: `.claude/commands/dto.md`
 
 ## Swagger 문서화
 
-### 필수 데코레이터
+모든 API 엔드포인트에 필수:
+- `@ApiTags()` - 그룹핑
+- `@ApiOperation()` - 설명
+- `@ApiResponse()` - 성공/에러 응답
+
+상세 가이드: `.claude/commands/swagger.md`
+
+## 예외 처리
 
 ```typescript
-@ApiTags('brands')  // 그룹핑
-@ApiOperation({ summary: '브랜드 목록 조회' })  // 설명
-@ApiResponse({ status: 200, type: [BrandDto] })  // 응답
-@ApiResponse({ status: 404, description: 'Not found' })  // 에러
-```
+import { NotFoundException, BadRequestException, UnauthorizedException, ForbiddenException } from '@nestjs/common';
 
-### DTO 문서화
-
-```typescript
-export class BrandDto {
-  @ApiProperty({ description: 'ID', example: 'brand-123' })
-  id: string;
-
-  @ApiProperty({ description: '브랜드명', example: '치킨마루' })
-  name: string;
-
-  @ApiPropertyOptional({ description: '설명', nullable: true })
-  description?: string;
-}
+throw new NotFoundException('Brand not found');      // 404
+throw new BadRequestException('Invalid category');  // 400
+throw new UnauthorizedException('Please login');    // 401
+throw new ForbiddenException('Admin only');         // 403
 ```
 
 ## Prisma 사용
-
-### 서비스에서 사용
 
 ```typescript
 @Injectable()
 export class MyService {
   constructor(private readonly prisma: PrismaService) {}
 
-  // 조회
-  findAll() {
+  async findAll(): Promise<Brand[]> {
     return this.prisma.brand.findMany();
   }
 
-  // 조건 조회
-  findByCategory(category: string) {
-    return this.prisma.brand.findMany({
-      where: { category },
-      include: { statistics: true },
-    });
-  }
-
-  // 생성
-  create(data: CreateDto) {
-    return this.prisma.brand.create({ data });
-  }
-
-  // 수정
-  update(id: string, data: UpdateDto) {
-    return this.prisma.brand.update({
-      where: { id },
-      data,
-    });
-  }
-
-  // 삭제
-  delete(id: string) {
-    return this.prisma.brand.delete({ where: { id } });
+  async findOne(id: string): Promise<Brand> {
+    const item = await this.prisma.brand.findUnique({ where: { id } });
+    if (!item) throw new NotFoundException(`Brand #${id} not found`);
+    return item;
   }
 }
 ```
 
-## 테스트
-
-### 단위 테스트
-
-```typescript
-describe('BrandService', () => {
-  let service: BrandService;
-  let prisma: PrismaService;
-
-  beforeEach(async () => {
-    const module = await Test.createTestingModule({
-      providers: [
-        BrandService,
-        {
-          provide: PrismaService,
-          useValue: {
-            brand: {
-              findMany: jest.fn(),
-              findUnique: jest.fn(),
-              create: jest.fn(),
-            },
-          },
-        },
-      ],
-    }).compile();
-
-    service = module.get(BrandService);
-    prisma = module.get(PrismaService);
-  });
-
-  it('should find all brands', async () => {
-    const mockBrands = [{ id: '1', name: 'Brand' }];
-    jest.spyOn(prisma.brand, 'findMany').mockResolvedValue(mockBrands);
-
-    const result = await service.findAll({});
-    expect(result).toEqual(mockBrands);
-  });
-});
-```
-
 ## 금지 사항
 
-- 컨트롤러에서 직접 Prisma 호출 금지 (서비스 사용)
-- `any` 타입 남발 금지
-- 하드코딩된 설정값 금지 (ConfigService 사용)
-- 동기 코드에서 비동기 호출 금지
-- 예외를 삼키지 말 것 (로깅 후 재던지기)
+- 컨트롤러에서 직접 Prisma 호출 (서비스 사용)
+- `any` 타입 사용
+- 하드코딩된 설정값 (ConfigService 사용)
+- Swagger 데코레이터 누락
+- class-validator 누락
+- 반환 타입 생략
