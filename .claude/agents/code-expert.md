@@ -60,6 +60,23 @@ pnpm --filter @open-franchise/web lint
 - TypeScript 컴파일 오류 확인
 - 실제 동작 테스트
 
+### 4. 코드 리뷰 (자동 호출)
+
+**코드 작성 완료 후 반드시 `code-reviewer` 에이전트를 호출하여 코드 품질을 개선합니다.**
+
+```
+워크플로우: planner → code-expert → code-reviewer (자동)
+```
+
+code-reviewer가 수행하는 작업:
+- 가독성 검토 (네이밍, 코드 구조)
+- 로직 개선 (효율성, 안전성)
+- 규칙 준수 확인 (NestJS/Next.js)
+- 문제 발견 시 **직접 코드 수정**
+- 최종 lint 검증
+
+자세한 내용: `.claude/agents/code-reviewer.md`
+
 ## 금지 사항
 
 - `any` 타입 사용
