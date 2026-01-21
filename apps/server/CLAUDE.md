@@ -2,6 +2,77 @@
 
 NestJS 기반 백엔드 API 서버입니다.
 
+## ⚠️ 필수 준수 사항
+
+> **이 규칙들은 반드시 지켜야 합니다. 예외 없음.**
+
+### 1. `any` 타입 절대 금지
+
+```typescript
+// ❌ 금지
+function process(data: any) { ... }
+const result: any = await fetchData();
+
+// ✅ 올바른 방법
+function process(data: BrandResponseDto) { ... }
+const result: BrandResponseDto = await fetchData();
+
+// 타입을 모를 경우 unknown 사용 후 타입 가드
+function process(data: unknown) {
+  if (isBrandData(data)) {
+    // data는 이제 Brand 타입
+  }
+}
+```
+
+### 2. 모든 API 엔드포인트에 DTO 필수
+
+```typescript
+// ❌ 금지 - 인라인 타입이나 any 사용
+@Post()
+async create(@Body() data: { name: string }) { ... }
+
+@Get()
+async findAll(@Query('limit') limit: number) { ... }
+
+// ✅ 올바른 방법 - DTO 클래스 사용
+@Post()
+async create(@Body() dto: CreateBrandDto): Promise<BrandResponseDto> { ... }
+
+@Get()
+async findAll(@Query() query: FindBrandDto): Promise<BrandListResponseDto> { ... }
+```
+
+### 3. DTO 필수 구성 요소
+
+모든 DTO는 다음을 포함해야 합니다:
+
+```typescript
+import { ApiProperty } from '@nestjs/swagger';
+import { IsString, IsNotEmpty } from 'class-validator';
+
+export class CreateBrandDto {
+  @ApiProperty({ description: '브랜드명', example: '치킨마루' })  // Swagger 문서화
+  @IsString({ message: '문자열이어야 합니다' })                   // 유효성 검사
+  @IsNotEmpty({ message: '필수 입력 항목입니다' })                // 필수 검사
+  name: string;  // 명시적 타입
+}
+```
+
+### 4. 서비스 메서드 반환 타입 명시
+
+```typescript
+// ❌ 금지
+async findAll(query: FindBrandDto) {
+  return this.prisma.brand.findMany();
+}
+
+// ✅ 올바른 방법
+async findAll(query: FindBrandDto): Promise<Brand[]> {
+  return this.prisma.brand.findMany();
+}
+```
+
 ## 기술 스택
 
 - **Framework**: NestJS 10
@@ -461,8 +532,26 @@ describe('BrandService', () => {
 
 ## 주의사항
 
+### 필수 (위반 시 코드 리뷰 거부)
+
+1. **`any` 타입 절대 금지** - `unknown` + 타입 가드 사용
+2. **모든 API에 DTO 필수** - Request/Response DTO 모두 작성
+3. **Swagger 데코레이터 필수** - `@ApiProperty`, `@ApiOperation` 등
+4. **class-validator 필수** - `@IsString`, `@IsNotEmpty` 등
+
+### 프로젝트 설정
+
 1. **글로벌 프리픽스**: 모든 API 경로는 `/franchise`로 시작
 2. **인증 쿠키**: JWT는 `accessToken` 쿠키에 저장
 3. **ValidationPipe**: 전역 적용 (`transform: true`, `whitelist: true`)
 4. **Prisma 관계**: `relationMode = "prisma"` 사용 (FK 없음)
 5. **CORS**: `credentials: true`로 설정됨
+
+## DTO 작성 가이드
+
+상세한 DTO 작성 방법은 `.claude/commands/dto.md`를 참조하세요.
+
+```bash
+# DTO 스킬 실행
+/dto
+```
