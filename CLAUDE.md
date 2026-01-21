@@ -15,6 +15,18 @@ open-franchise/
 └── .github/workflows/   # CI/CD 파이프라인
 ```
 
+## 작업 규칙
+
+### 계획 수립 필수
+
+**모든 작업은 반드시 `.claude/agents/planner.md` 서브 에이전트를 먼저 호출하여 계획을 수립한 후 진행해야 합니다.**
+
+1. 작업 시작 전 planner 에이전트 호출
+2. 계획 검토 및 승인
+3. 승인된 계획에 따라 구현 진행
+
+이를 통해 체계적인 구현과 일관된 코드 품질을 보장합니다.
+
 ## 기술 스택
 
 | 영역 | 기술 |
@@ -109,7 +121,8 @@ pnpm --filter @open-franchise/web test:e2e
 ### TypeScript
 
 - 모든 코드는 TypeScript로 작성
-- 명시적 타입 선언 권장 (`any` 최소화)
+- **`any` 타입 사용 금지** - `unknown` + 타입 가드 또는 구체적인 타입 사용
+- 명시적 타입 선언 권장
 - 인터페이스보다 `type` 키워드 선호
 
 ### 포맷팅 (Prettier)

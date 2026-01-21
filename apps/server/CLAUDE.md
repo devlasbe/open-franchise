@@ -6,11 +6,10 @@ NestJS 기반 백엔드 API 서버입니다.
 
 > **이 규칙들은 반드시 지켜야 합니다. 예외 없음.**
 
-1. **`any` 타입 절대 금지** - `unknown` + 타입 가드 사용
-2. **모든 API에 DTO 필수** - Request/Response DTO 모두 작성
-3. **Swagger 데코레이터 필수** - `@ApiProperty`, `@ApiOperation` 등
-4. **class-validator 필수** - `@IsString`, `@IsNotEmpty` 등
-5. **서비스 메서드 반환 타입 명시** - `Promise<T>` 형태로
+1. **모든 API에 DTO 필수** - Request/Response DTO 모두 작성
+2. **Swagger 데코레이터 필수** - `@ApiProperty`, `@ApiOperation` 등
+3. **class-validator 필수** - `@IsString`, `@IsNotEmpty` 등
+4. **서비스 메서드 반환 타입 명시** - `Promise<T>` 형태로
 
 상세 코딩 규칙은 `.claude/rules/nestjs.md`를 참조하세요.
 

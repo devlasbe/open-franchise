@@ -162,5 +162,5 @@ pnpm test:e2e     # E2E 테스트
 2. **shadcn/ui는 `components/ui/`에만**
 3. **Server Component에서 직접 데이터 페칭** (useEffect 지양)
 4. **Client Component는 필요한 경우에만**
-5. **타입 안정성 유지** (any 지양)
+5. **타입 안정성 유지**
 6. **반응형 디자인** (모바일 우선)

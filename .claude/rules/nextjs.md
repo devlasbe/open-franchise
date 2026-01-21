@@ -105,6 +105,8 @@ export default function SearchResults({ query }: { query: string }) {
 
 ## 스타일링
 
+> 디자인 품질이 중요한 UI 작업 시 `.claude/skills/frontend-design/SKILL.md` 스킬을 참조하세요.
+
 ### Tailwind 클래스 순서
 
 1. 레이아웃 (display, position)

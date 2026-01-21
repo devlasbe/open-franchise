@@ -2,22 +2,7 @@
 
 ## ⚠️ 필수 규칙
 
-### 1. `any` 타입 절대 금지
-
-```typescript
-// ❌ 금지
-function process(data: any) { ... }
-
-// ✅ 올바른 방법
-function process(data: BrandResponseDto) { ... }
-
-// 타입을 모를 경우
-function process(data: unknown) {
-  if (isBrandData(data)) { /* 타입 가드 후 사용 */ }
-}
-```
-
-### 2. 모든 API에 DTO 필수
+### 1. 모든 API에 DTO 필수
 
 ```typescript
 // ❌ 금지
@@ -29,7 +14,7 @@ async create(@Body() data: { name: string }) { ... }
 async create(@Body() dto: CreateBrandDto): Promise<BrandResponseDto> { ... }
 ```
 
-### 3. 반환 타입 명시
+### 2. 반환 타입 명시
 
 ```typescript
 // ❌ 금지
@@ -46,48 +31,32 @@ module/
 ├── module.module.ts
 ├── module.controller.ts
 ├── module.service.ts
-└── dto/
-    ├── create-module.dto.ts
-    ├── update-module.dto.ts
-    └── module-response.dto.ts
+├── dto/
+│   └── [module].dto.ts
+└── entities/
+    └── [module].entity.ts
 ```
 
-상세 템플릿: `.claude/commands/new-module.md`
+## 스킬 참조
+
+상세한 작성 가이드는 스킬 문서를 참조하세요:
+
+| 스킬 | 파일 | 설명 |
+|------|------|------|
+| DTO 작성 | `.claude/skills/dto/SKILL.md` | Request/Response DTO 템플릿, TypeUtil 활용법 |
+| Entity 작성 | `.claude/skills/entity/SKILL.md` | Entity 클래스 정의, 필드 패턴 |
+| Swagger 문서화 | `.claude/skills/swagger/SKILL.md` | 컨트롤러 데코레이터, API 문서화 |
 
 ## 데코레이터 순서
 
-1. `@ApiTags()` (클래스)
-2. `@Controller()` (클래스)
-3. `@UseGuards()` (메서드/클래스)
-4. `@Get()`, `@Post()` 등 (메서드)
-5. `@ApiOperation()`, `@ApiResponse()` (메서드)
-
-## DTO 작성 규칙
-
-모든 DTO 필드에 필수:
-- `@ApiProperty()` - Swagger 문서화
-- `@IsString()`, `@IsNumber()` 등 - 타입 검증
-- `@IsNotEmpty()`, `@IsOptional()` - 필수/선택 여부
-
 ```typescript
-export class CreateBrandDto {
-  @ApiProperty({ description: '브랜드명', example: '치킨마루' })
-  @IsString()
-  @IsNotEmpty()
-  name: string;
-}
+@Get()                           // 1. HTTP 메서드
+@UseGuards(AdminAuthGuard)       // 2. 가드 (필요시)
+@ApiBearerAuth('access-token')   // 3. 인증 (필요시)
+@ApiExtraModels(GetXxxReq)       // 4. 추가 모델 등록
+@ApiBody({ type: CreateXxxDto }) // 5. Body 스키마 (필요시)
+@ApiOkResponse({...})            // 6. 응답 스키마
 ```
-
-상세 가이드: `.claude/commands/dto.md`
-
-## Swagger 문서화
-
-모든 API 엔드포인트에 필수:
-- `@ApiTags()` - 그룹핑
-- `@ApiOperation()` - 설명
-- `@ApiResponse()` - 성공/에러 응답
-
-상세 가이드: `.claude/commands/swagger.md`
 
 ## 예외 처리
 
@@ -122,8 +91,8 @@ export class MyService {
 ## 금지 사항
 
 - 컨트롤러에서 직접 Prisma 호출 (서비스 사용)
-- `any` 타입 사용
 - 하드코딩된 설정값 (ConfigService 사용)
 - Swagger 데코레이터 누락
 - class-validator 누락
 - 반환 타입 생략
+- 인라인 타입으로 API 파라미터 정의

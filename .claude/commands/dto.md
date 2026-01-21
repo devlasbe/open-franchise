@@ -5,9 +5,8 @@ NestJS 프로젝트에서 DTO(Data Transfer Object)를 작성하는 가이드입
 ## 필수 규칙
 
 1. **모든 API 엔드포인트는 반드시 DTO를 사용해야 합니다**
-2. **`any` 타입 사용 절대 금지**
-3. **Swagger 데코레이터 필수 적용**
-4. **class-validator를 통한 유효성 검사 필수**
+2. **Swagger 데코레이터 필수 적용**
+3. **class-validator를 통한 유효성 검사 필수**
 
 ## DTO 종류
 
@@ -326,4 +325,3 @@ export class BrandController {
 - [ ] 숫자 필드에 `@Type(() => Number)` 적용 (Query DTO)
 - [ ] description과 example 작성
 - [ ] 에러 메시지 한글로 작성
-- [ ] **`any` 타입 절대 사용 금지**
