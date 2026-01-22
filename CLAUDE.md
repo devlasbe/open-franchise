@@ -22,6 +22,7 @@ open-franchise/
 | 1    | `planner`       | 작업 계획 수립 | 모든 작업 시작 전 **필수** |
 | 2    | `code-expert`   | 코드 구현      | 계획 승인 후               |
 | 3    | `code-reviewer` | 품질 개선      | 구현 완료 후 **자동**      |
+| 4    | `docs-updater`  | 문서 업데이트  | 코드 리뷰 후 **자동**      |
 
 ## 주요 명령어
 
