@@ -1,4 +1,4 @@
-import fetchService from '@/lib/fetchService';
+import fetchService from '@/utils/api';
 import { GetCategoryListRes } from '@/types/apiTypes';
 
 export class CategoryService {

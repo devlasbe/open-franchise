@@ -1,4 +1,4 @@
-import fetchService from '@/lib/fetchService';
+import fetchService from '@/utils/api';
 import { GetProfileResponseDto, LoginRequestDto, LoginResponseDto } from '@/types/apiTypes';
 
 export class AuthService {
