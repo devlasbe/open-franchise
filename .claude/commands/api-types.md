@@ -1,3 +1,7 @@
+---
+description: 서버 Swagger에서 TypeScript 타입 자동 생성
+---
+
 # API 타입 생성
 
 서버의 Swagger 스키마에서 TypeScript 타입을 자동 생성합니다.

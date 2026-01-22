@@ -1,3 +1,7 @@
+---
+description: NestJS 새 모듈 생성 가이드
+---
+
 # NestJS 새 모듈 생성
 
 NestJS 프로젝트에 새 모듈을 추가하는 가이드입니다.

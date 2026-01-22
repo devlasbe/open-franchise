@@ -1,7 +1,7 @@
 ---
 name: code-reviewer
 description: 코드 가독성 향상 및 로직 개선 전문가
-tools: Read, Edit, Write, Grep, Glob, Shell
+tools: Read, Edit, Write, Grep, Glob, Bash
 model: opus
 ---
 
