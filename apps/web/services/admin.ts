@@ -1,4 +1,4 @@
-import fetchService from '@/utils/api';
+import fetchService from '@/utils/fetchService';
 
 export class AdminService {
   static async callBrand(yr: number) {

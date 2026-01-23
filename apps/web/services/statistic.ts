@@ -1,4 +1,4 @@
-import fetchService from '@/utils/api';
+import fetchService from '@/utils/fetchService';
 import { GetStartupRes, GetStatisticByFilterReq, GetStatisticListRes } from '@/types/apiTypes';
 import { QueryParamsUtil } from '@/utils/queryParams';
 
