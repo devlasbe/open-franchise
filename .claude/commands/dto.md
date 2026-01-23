@@ -1,3 +1,7 @@
+---
+description: NestJS DTO 작성 가이드 및 템플릿
+---
+
 # 백엔드 DTO 작성 스킬
 
 NestJS 프로젝트에서 DTO(Data Transfer Object)를 작성하는 가이드입니다.

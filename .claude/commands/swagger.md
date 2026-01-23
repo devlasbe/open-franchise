@@ -1,3 +1,7 @@
+---
+description: Swagger API 문서화 가이드
+---
+
 # Swagger API 문서화 스킬
 
 NestJS 프로젝트에서 Swagger를 사용한 API 문서화 가이드입니다.

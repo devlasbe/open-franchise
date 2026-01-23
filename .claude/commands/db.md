@@ -1,3 +1,7 @@
+---
+description: Prisma 데이터베이스 관리 명령어
+---
+
 # 데이터베이스 (Prisma)
 
 Prisma를 사용한 데이터베이스 관리 명령어입니다.

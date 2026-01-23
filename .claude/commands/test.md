@@ -1,3 +1,7 @@
+---
+description: 테스트 실행 (Playwright E2E, Jest)
+---
+
 # 테스트 실행
 
 테스트를 실행합니다.

@@ -1,3 +1,7 @@
+---
+description: Next.js 새 컴포넌트 생성 가이드
+---
+
 # Next.js 새 컴포넌트 생성
 
 Next.js 프로젝트에 새 컴포넌트를 추가하는 가이드입니다.

@@ -1,16 +1,26 @@
 {
   "permissions": {
     "allow": [
-      "Bash(pnpm approve-builds:*)",
-      "Bash(pnpm install:*)",
-      "Bash(git init:*)",
-      "Bash(git add:*)",
-      "Bash(git commit -m \"$\\(cat <<''EOF''\nchore: migrate to pnpm workspace monorepo\n\n- Restructure project: backend → apps/server, frontend → apps/web\n- Add pnpm workspace configuration with root package.json\n- Update GitHub Actions workflows with path filters and new paths\n- Consolidate .gitignore to root level\n- Update package names to @open-franchise/server and @open-franchise/web\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>\nEOF\n\\)\")",
-      "Bash(tree:*)",
-      "Bash(pnpm --filter @open-franchise/web add:*)",
+      "Bash(pnpm dev:*)",
+      "Bash(pnpm build:*)",
       "Bash(pnpm lint:*)",
-      "Bash(pnpm lint:fix:*)",
-      "Bash(pnpm --filter @open-franchise/server lint:*)"
+      "Bash(pnpm format:*)",
+      "Bash(pnpm test:*)",
+      "Bash(pnpm prisma:*)",
+      "Bash(pnpm swagger:*)",
+      "Bash(pnpm install:*)",
+      "Bash(pnpm approve-builds:*)",
+      "Bash(pnpm --filter *)",
+      "Bash(git status:*)",
+      "Bash(git diff:*)",
+      "Bash(git log:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)",
+      "Bash(git fetch:*)",
+      "Bash(git checkout:*)",
+      "Bash(git branch:*)",
+      "Bash(tree:*)"
     ]
   }
 }

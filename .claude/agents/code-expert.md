@@ -1,7 +1,7 @@
 ---
 name: code-expert
 description: TypeScript 기반 코드 작성 전문가
-tools: Read, Edit, Write, Grep, Glob, Shell
+tools: Read, Edit, Write, Grep, Glob, Bash
 model: opus
 ---
 
