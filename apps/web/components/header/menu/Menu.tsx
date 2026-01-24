@@ -1,9 +1,9 @@
-import { CategoryService } from "@/services/category";
+import { CategoryService } from '@/services/category';
 
-import React from "react";
+import React from 'react';
 
-import DesktopMenu from "./DesktopMenu";
-import MobileMenu from "./MobileMenu";
+import DesktopMenu from './DesktopMenu';
+import MobileMenu from './MobileMenu';
 
 export default async function Menu() {
   const response = await CategoryService.getCategoryList();

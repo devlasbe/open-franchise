@@ -11,6 +11,9 @@
     "build:server": "pnpm --filter @open-franchise/server run build",
     "build:web": "pnpm --filter @open-franchise/web run build",
     "lint": "pnpm -r run lint",
+    "lint:fix": "pnpm -r run lint",
+    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\"",
+    "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,json,md}\"",
     "clean": "pnpm -r exec rm -rf node_modules dist .next",
     "prisma:generate": "pnpm --filter @open-franchise/server run prisma:generate",
     "prisma:migrate:dev": "pnpm --filter @open-franchise/server run migrate:dev"

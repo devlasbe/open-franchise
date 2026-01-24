@@ -13,11 +13,17 @@ import { InteriorsModule } from './interiors/interiors.module';
 import { HeadsModule } from './heads/heads.module';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
+import { CommentsModule } from './comments/comments.module';
+import { BlockedIpsModule } from './blocked-ips/blocked-ips.module';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      cache: true,
+      isGlobal: true,
+      envFilePath: [`.env.${process.env.NODE_ENV || 'development'}`, '.env'],
+    }),
     PrismaModule,
-    ConfigModule.forRoot({ cache: true, isGlobal: true }),
     HttpModule.register({ global: true }),
     OpenApiModule,
     StatisticModule,
@@ -28,6 +34,8 @@ import { UsersModule } from './users/users.module';
     HeadsModule,
     AuthModule,
     UsersModule,
+    CommentsModule,
+    BlockedIpsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

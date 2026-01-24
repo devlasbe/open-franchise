@@ -1,7 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsEmail, IsString, MinLength } from 'class-validator';
-import { User, UserWithoutPassword } from './users.entity';
-import { UserRole } from '@prisma/client';
+import { UserWithoutPassword } from './users.entity';
 import { TypeUtil } from 'src/common/utils/type.util';
 
 export class CreateUserReq {
@@ -20,14 +19,8 @@ export class CreateUserReq {
   name: string;
 }
 
-export class CreateUserRes extends TypeUtil.getSuccessResponse(
-  UserWithoutPassword,
-) {}
+export class CreateUserRes extends TypeUtil.getSuccessResponse(UserWithoutPassword) {}
 
-export class FindUserAllRes extends TypeUtil.getSuccessResponseList(
-  UserWithoutPassword,
-) {}
+export class FindUserAllRes extends TypeUtil.getSuccessResponseList(UserWithoutPassword) {}
 
-export class FindUserByIdRes extends TypeUtil.getSuccessResponse(
-  UserWithoutPassword,
-) {}
+export class FindUserByIdRes extends TypeUtil.getSuccessResponse(UserWithoutPassword) {}

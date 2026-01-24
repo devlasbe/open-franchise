@@ -17,6 +17,7 @@ ENV NEXT_PUBLIC_API_URL_PROD=$NEXT_PUBLIC_API_URL_PROD
 
 COPY --from=deps /app/node_modules ./node_modules
 COPY --from=deps /app/apps/web/node_modules ./apps/web/node_modules
+COPY .prettierrc ./
 COPY apps/web ./apps/web
 
 WORKDIR /app/apps/web
@@ -34,8 +35,12 @@ COPY --from=builder /app/apps/web/public ./public
 RUN mkdir .next
 RUN chown nextjs:nodejs .next
 
+# standalone 출력 복사
 COPY --from=builder --chown=nextjs:nodejs /app/apps/web/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/apps/web/.next/static ./.next/static
+
+# pnpm 심볼릭 링크 해결을 위해 실제 node_modules 복사
+COPY --from=builder --chown=nextjs:nodejs /app/node_modules ./node_modules
 
 USER nextjs
 EXPOSE 3000

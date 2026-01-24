@@ -1,10 +1,7 @@
 import { Controller, Get, Param, Query } from '@nestjs/common';
 import { StatisticService } from './statistic.service';
 import { ApiExtraModels, ApiOkResponse, ApiParam } from '@nestjs/swagger';
-import {
-  GetStatisticByFilterReq,
-  GetStatisticListRes,
-} from './dto/statistic.dto';
+import { GetStatisticByFilterReq, GetStatisticListRes } from './dto/statistic.dto';
 
 @Controller('statistic')
 export class StatisticController {

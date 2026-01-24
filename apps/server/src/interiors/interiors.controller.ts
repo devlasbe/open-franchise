@@ -2,7 +2,6 @@ import { Controller, Get, Query } from '@nestjs/common';
 import { InteriorsService } from './interiors.service';
 import { ApiExtraModels, ApiOkResponse } from '@nestjs/swagger';
 import { GetInteriorReq, GetInteriorRes } from './dto/interior.dto';
-import { GetHeadReq } from 'src/heads/dto/head.dto';
 
 @Controller('interiors')
 export class InteriorsController {

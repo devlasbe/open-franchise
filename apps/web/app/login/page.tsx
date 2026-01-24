@@ -68,7 +68,9 @@ export default function LoginPage() {
             />
           </div>
 
-          {error && <div className="p-3 text-sm text-destructive bg-destructive/10 rounded-md">{error}</div>}
+          {error && (
+            <div className="p-3 text-sm text-destructive bg-destructive/10 rounded-md">{error}</div>
+          )}
 
           <Button type="submit" className="w-full" disabled={isLoading}>
             {isLoading ? '로그인 중...' : '로그인'}

@@ -1,9 +1,5 @@
 import { HttpException, Injectable, Logger } from '@nestjs/common';
-import {
-  StatisticResponseDto,
-  OpenApiRequestDto,
-  StartupResponseDto,
-} from './dto/openApi.dto';
+import { StatisticResponseDto, OpenApiRequestDto, StartupResponseDto } from './dto/openApi.dto';
 import { ConfigService } from '@nestjs/config';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { HttpService } from '@nestjs/axios';
@@ -61,7 +57,7 @@ export class OpenApiService {
           ? transformResponse(response.data.items)
           : (response.data.items as unknown as R[]);
 
-        const result = await saveFunction(items);
+        await saveFunction(items);
 
         this.logger.log(
           `${(pageNo - 1) * numOfRows + 1}~${pageNo * numOfRows} / total: ${totalCount}`,
@@ -88,7 +84,7 @@ export class OpenApiService {
       async (data) => {
         await Promise.all(
           data.map((item) => {
-            const { statistics, ...rest } = item;
+            const { statistics: _statistics, ...rest } = item;
             return this.prisma.brand.upsert({
               where: { brandNm: rest.brandNm },
               update: rest,

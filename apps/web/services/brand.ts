@@ -1,4 +1,4 @@
-import fetchService from '@/lib/fetchService';
+import fetchService from '@/utils/fetchService';
 import { GetBrandListReq, GetBrandListRes, GetBrandRes, GetRejectedBrandListRes } from '@/types/apiTypes';
 import { QueryParamsUtil } from '@/utils/queryParams';
 

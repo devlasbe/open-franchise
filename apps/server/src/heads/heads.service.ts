@@ -50,17 +50,18 @@ export class HeadsService {
 
   async findOneByOpenApi(params: GetHeadReq & { jngBizCrtraYr: string }) {
     try {
-      const response = await this.httpService.axiosRef.get<
-        OpenApiResponseDto<Head>
-      >(this.endPoint, {
-        params: {
-          resultType: 'json',
-          serviceKey: this.key,
-          pageNo: 1,
-          numOfRows: 1,
-          ...params,
+      const response = await this.httpService.axiosRef.get<OpenApiResponseDto<Head>>(
+        this.endPoint,
+        {
+          params: {
+            resultType: 'json',
+            serviceKey: this.key,
+            pageNo: 1,
+            numOfRows: 1,
+            ...params,
+          },
         },
-      });
+      );
       console.log(`Head OpenApi -> year: ${this.year}`, response.data);
       const data = response?.data?.items;
       if (data?.length) return data[0];

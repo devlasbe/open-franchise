@@ -3,7 +3,12 @@
 import { HamburgerMenuIcon } from '@radix-ui/react-icons';
 // prettier-ignore
 import { AlertDialog,AlertDialogCancel,AlertDialogContent,AlertDialogDescription,AlertDialogFooter,AlertDialogTitle,AlertDialogTrigger } from "../../ui/alert-dialog";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from '@/components/ui/accordion';
 import { Category } from '@/types/apiTypes';
 import { SearchIcon } from 'lucide-react';
 import SearchInput from '@/components/SearchInput';
@@ -47,7 +52,11 @@ export default function MobileMenu({ categoryList }: { categoryList: Category[] 
                   <AccordionTrigger>{item}</AccordionTrigger>
                   <AccordionContent className="grid grid-cols-2 gap-1">
                     {subList.map((sub) => (
-                      <AlertDialogCancel asChild key={`mobile-sub-menu-${sub.indutyMlsfcNm}`} className="m-0">
+                      <AlertDialogCancel
+                        asChild
+                        key={`mobile-sub-menu-${sub.indutyMlsfcNm}`}
+                        className="m-0"
+                      >
                         <Link
                           href={`/search?category=${sub.indutyMlsfcNm}`}
                           className="py-1 border rounded-md text-center text-caption1 sm:text-body text-ellipsis line-clamp-1"

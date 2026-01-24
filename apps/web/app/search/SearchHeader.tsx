@@ -11,7 +11,10 @@ export default function SearchHeader({ current, onChange }: SearchHeaderType) {
   return (
     <SubHeader>
       <div className="flex items-center gap-2 max-w-screen-xl w-full overflow-x-scroll scrollbar-hide">
-        <SortButton isCurrent={!current?.orderCol} onClick={() => onChange({ orderCol: '', orderSort: '' })}>
+        <SortButton
+          isCurrent={!current?.orderCol}
+          onClick={() => onChange({ orderCol: '', orderSort: '' })}
+        >
           기본
         </SortButton>
         <Separator orientation="vertical" className="border-r h-4" />
@@ -33,7 +36,10 @@ const SortButton = ({
   children,
   isCurrent,
   ...rest
-}: { children: React.ReactNode; isCurrent?: boolean } & React.ButtonHTMLAttributes<HTMLButtonElement>) => {
+}: {
+  children: React.ReactNode;
+  isCurrent?: boolean;
+} & React.ButtonHTMLAttributes<HTMLButtonElement>) => {
   return (
     <button
       {...rest}

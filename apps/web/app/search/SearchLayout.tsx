@@ -25,7 +25,9 @@ export default function SearchLayout() {
   if (!isLoading && !dataList?.length) {
     return (
       <div className="flex flex-1 justify-center items-center">
-        <p className="text-subtitle1 text-neutral-300 underline decoration-wavy">데이터가 존재하지 않습니다.</p>
+        <p className="text-subtitle1 text-neutral-300 underline decoration-wavy">
+          데이터가 존재하지 않습니다.
+        </p>
       </div>
     );
   }
@@ -36,18 +38,30 @@ export default function SearchLayout() {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 lg:gap-4 pt-12">
         {!!dataList?.length &&
           dataList.map((item) => (
-            <Link key={`search-${item.brandNm}`} className="hovered-button" href={`/brand/${item.brandNm}`}>
+            <Link
+              key={`search-${item.brandNm}`}
+              className="hovered-button"
+              href={`/brand/${item.brandNm}`}
+            >
               <Card className="flex flex-col gap-3 p-4">
                 <div className="flex flex-col gap-1">
                   <p className="text-caption1 text-neutral-400 text-ellipsis line-clamp-1">
                     {item?.corpNm ?? '-'} · {item?.brand?.majrGdsNm ?? '-'}
                   </p>
-                  <p className="text-subtitle3 sm:text-subtitle1 text-ellipsis line-clamp-1">{item.brandNm}</p>
+                  <p className="text-subtitle3 sm:text-subtitle1 text-ellipsis line-clamp-1">
+                    {item.brandNm}
+                  </p>
                 </div>
                 <div className="space-y-1 bg-neutral-50 px-4 py-2 rounded-lg">
                   <Value label="점포수" value={item?.frcsCnt?.toLocaleString() + '개'} />
-                  <Value label="창업금액" value={UnitUtil.formatNumberToKorean(item?.startup?.smtnAmt) + '원'} />
-                  <Value label="평균매출" value={UnitUtil.formatNumberToKorean(item.avrgSlsAmt) + '원'} />
+                  <Value
+                    label="창업금액"
+                    value={UnitUtil.formatNumberToKorean(item?.startup?.smtnAmt) + '원'}
+                  />
+                  <Value
+                    label="평균매출"
+                    value={UnitUtil.formatNumberToKorean(item.avrgSlsAmt) + '원'}
+                  />
                 </div>
                 <div className="flex gap-2">
                   <Badge variant={'outline'}>{item.indutyLclasNm}</Badge>

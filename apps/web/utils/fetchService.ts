@@ -1,7 +1,4 @@
-const apiDev = process.env.NEXT_PUBLIC_API_URL_DEV;
-const apiProd = process.env.NEXT_PUBLIC_API_URL_PROD;
-const isDev = process.env.NODE_ENV === 'development';
-const defaultUrl = isDev ? apiDev : apiProd;
+import constants from '@/constants';
 
 type MyFetchType = {
   path: RequestInfo | URL;
@@ -21,7 +18,7 @@ export class ApiError extends Error {
 
 const fetchService = async <T>({ path, init, isClient }: MyFetchType) => {
   try {
-    const endPoint = isClient ? `/franchise/${path}` : `${defaultUrl}/${path}`;
+    const endPoint = isClient ? `/franchise/${path}` : `${constants.API_BASE_URL}/${path}`;
 
     // 서버 사이드일 때 자동으로 쿠키 헤더 추가
     if (!isClient && typeof window === 'undefined') {
@@ -48,7 +45,21 @@ const fetchService = async <T>({ path, init, isClient }: MyFetchType) => {
 
     if (!response.ok) {
       console.error('[ERROR]', endPoint, response.status);
-      throw new ApiError('API 응답 처리 실패', response.status);
+
+      // 서버의 에러 메시지 파싱 시도
+      let errorMessage = 'API 응답 처리 실패';
+      try {
+        const errorData = await response.json();
+        if (errorData.message) {
+          errorMessage = Array.isArray(errorData.message)
+            ? errorData.message[0]
+            : errorData.message;
+        }
+      } catch {
+        // JSON 파싱 실패 시 기본 메시지 사용
+      }
+
+      throw new ApiError(errorMessage, response.status);
     }
 
     const data: T = await response.json();

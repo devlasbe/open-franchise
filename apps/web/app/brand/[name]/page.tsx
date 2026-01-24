@@ -7,6 +7,7 @@ import BrandHead from './BrandHead';
 import { BrandService } from '@/services/brand';
 import BrandInterior from './BrandInterior';
 import { SeoUtil } from '@/utils/seo';
+import CommentSection from './comments/CommentSection';
 
 type BrandPageParams = {
   params: {
@@ -33,7 +34,9 @@ const RejectedBrand = () => {
   return (
     <div className="flex-1 flex flex-col items-center justify-center">
       <div className="flex flex-col gap-2">
-        <div className="text-sm text-gray-500">업체 측의 요청으로 인해 브랜드 정보가 비공개 처리되었습니다.</div>
+        <div className="text-sm text-gray-500">
+          업체 측의 요청으로 인해 브랜드 정보가 비공개 처리되었습니다.
+        </div>
       </div>
     </div>
   );
@@ -86,6 +89,9 @@ const Layout = async ({ name }: { name: string }) => {
             <BrandStatistic statisticDataList={statisticDataList} />
           </FetchBoundary>
         )}
+        <FetchBoundary>
+          <CommentSection brandNm={decodeURIComponent(name)} />
+        </FetchBoundary>
       </div>
     </div>
   );

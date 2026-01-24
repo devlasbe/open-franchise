@@ -1,7 +1,7 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import Summary from "@/components/ui/summary";
-import { Head } from "@/types/apiTypes";
-import { Link1Icon } from "@radix-ui/react-icons";
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import Summary from '@/components/ui/summary';
+import { Head } from '@/types/apiTypes';
+import { Link1Icon } from '@radix-ui/react-icons';
 
 export default function BrandHead({ headData }: { headData: Head }) {
   return (
@@ -11,7 +11,11 @@ export default function BrandHead({ headData }: { headData: Head }) {
           <p>🏢 본사 정보</p>
           {!!headData?.hmpgUrladr && (
             <a
-              href={headData.hmpgUrladr.startsWith("http") ? headData.hmpgUrladr : `http://${headData.hmpgUrladr}`}
+              href={
+                headData.hmpgUrladr.startsWith('http')
+                  ? headData.hmpgUrladr
+                  : `http://${headData.hmpgUrladr}`
+              }
               target="_blank"
               className="hovered-button flex items-center gap-1 mt-[-4px] px-2 py-1 hover:bg-neutral-100 border rounded-lg text-neutral-400 text-caption1"
             >
@@ -25,7 +29,7 @@ export default function BrandHead({ headData }: { headData: Head }) {
         <Summary.Container>
           <Summary.Wrapper>
             {Object.values(headLayout).map((item) => {
-              return <Summary.Header key={`brand-head-header-${item + ""}`}>{item}</Summary.Header>;
+              return <Summary.Header key={`brand-head-header-${item + ''}`}>{item}</Summary.Header>;
             })}
           </Summary.Wrapper>
           <Summary.Wrapper>
@@ -35,7 +39,7 @@ export default function BrandHead({ headData }: { headData: Head }) {
                   key={`brand-head-cell-${key}`}
                   className="flex flex-1 justify-end sm:justify-center py-1 text-body sm:text-textbody text-nowrap"
                 >
-                  {headData[key as keyof Head] ?? "-"}
+                  {headData[key as keyof Head] ?? '-'}
                 </div>
               );
             })}
@@ -47,9 +51,9 @@ export default function BrandHead({ headData }: { headData: Head }) {
 }
 
 const headLayout: Partial<Record<keyof Head, string>> = {
-  jnghdqrtrsConmNm: "본사",
-  jnghdqrtrsRprsvNm: "대표",
-  bzmnRgsDate: "사업자등록일",
-  entScaleNm: "기업규모",
-  areaNm: "소재지",
+  jnghdqrtrsConmNm: '본사',
+  jnghdqrtrsRprsvNm: '대표',
+  bzmnRgsDate: '사업자등록일',
+  entScaleNm: '기업규모',
+  areaNm: '소재지',
 };

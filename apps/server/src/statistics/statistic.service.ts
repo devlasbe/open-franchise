@@ -20,14 +20,7 @@ export class StatisticService {
     });
   }
 
-  findByFilter({
-    pageNo,
-    pageSize,
-    name,
-    category,
-    orderCol,
-    orderSort,
-  }: GetStatisticByFilterReq) {
+  findByFilter({ pageNo, pageSize, name, category, orderCol, orderSort }: GetStatisticByFilterReq) {
     const buildWhereQuery = () => {
       const where: any = {};
       if (name) where.brandNm = { contains: name, mode: 'insensitive' };

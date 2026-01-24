@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import { ErrorBoundary } from "react-error-boundary";
-import FetchBoundaryFallback from "./FetchBoundaryFallback";
-import { Suspense } from "react";
-import SuspenseFallback from "./SuspenseFallback";
+import { ErrorBoundary } from 'react-error-boundary';
+import FetchBoundaryFallback from './FetchBoundaryFallback';
+import { Suspense } from 'react';
+import SuspenseFallback from './SuspenseFallback';
 
 type FetchBoundaryType = {
   children: React.ReactNode;

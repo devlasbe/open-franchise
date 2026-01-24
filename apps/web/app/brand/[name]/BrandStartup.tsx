@@ -1,8 +1,8 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import Summary from "@/components/ui/summary";
-import { StatisticService } from "@/services/statistic";
-import { Startup } from "@/types/apiTypes";
-import { UnitUtil } from "@/utils/unit";
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import Summary from '@/components/ui/summary';
+import { StatisticService } from '@/services/statistic';
+import { Startup } from '@/types/apiTypes';
+import { UnitUtil } from '@/utils/unit';
 
 export default async function BrandStartup({ name }: { name: string }) {
   const startupData = (await StatisticService.getStartup(name))?.payload;
@@ -16,7 +16,9 @@ export default async function BrandStartup({ name }: { name: string }) {
         <Summary.Container>
           <Summary.Wrapper>
             {Object.values(startupLayout).map((item) => {
-              return <Summary.Header key={`brand-startup-header-${item + ""}`}>{item}</Summary.Header>;
+              return (
+                <Summary.Header key={`brand-startup-header-${item + ''}`}>{item}</Summary.Header>
+              );
             })}
           </Summary.Wrapper>
           <Summary.Wrapper>
@@ -24,7 +26,7 @@ export default async function BrandStartup({ name }: { name: string }) {
               return (
                 <Summary.Content key={`brand-startup-cell-${key}`}>
                   {!startupData || !(key in startupData)
-                    ? "-"
+                    ? '-'
                     : UnitUtil.formatNumberToKorean(+startupData[key as keyof Startup])}
                   원
                 </Summary.Content>
@@ -38,9 +40,9 @@ export default async function BrandStartup({ name }: { name: string }) {
 }
 
 const startupLayout = {
-  jngBzmnJngAmt: "가맹금액",
-  jngBzmnEduAmt: "교육금액",
-  jngBzmnEtcAmt: "기타금액",
-  jngBzmnAssrncAmt: "보증금액",
-  smtnAmt: "합계금액",
+  jngBzmnJngAmt: '가맹금액',
+  jngBzmnEduAmt: '교육금액',
+  jngBzmnEtcAmt: '기타금액',
+  jngBzmnAssrncAmt: '보증금액',
+  smtnAmt: '합계금액',
 };

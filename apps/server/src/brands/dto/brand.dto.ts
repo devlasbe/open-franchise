@@ -39,6 +39,4 @@ export class RejectedBrand {
   brandNm: string;
 }
 
-export class GetRejectedBrandListRes extends TypeUtil.getSuccessResponseList(
-  RejectedBrand,
-) {}
+export class GetRejectedBrandListRes extends TypeUtil.getSuccessResponseList(RejectedBrand) {}
