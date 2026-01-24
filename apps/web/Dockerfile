@@ -17,6 +17,7 @@ ENV NEXT_PUBLIC_API_URL_PROD=$NEXT_PUBLIC_API_URL_PROD
 
 COPY --from=deps /app/node_modules ./node_modules
 COPY --from=deps /app/apps/web/node_modules ./apps/web/node_modules
+COPY .prettierrc ./
 COPY apps/web ./apps/web
 
 WORKDIR /app/apps/web
@@ -41,4 +42,4 @@ USER nextjs
 EXPOSE 3000
 ENV PORT=3000
 ENV HOSTNAME="0.0.0.0"
-CMD ["node", "server.js"]
+CMD ["node", "apps/web/server.js"]
