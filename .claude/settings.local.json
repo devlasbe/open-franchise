@@ -23,7 +23,12 @@
       "Bash(tree:*)",
       "Bash(git rebase:*)",
       "Bash(GIT_EDITOR=true git rebase:*)",
-      "Bash(git -c core.editor=true rebase --continue)"
+      "Bash(git -c core.editor=true rebase --continue)",
+      "mcp__notion__notion-fetch",
+      "Bash(pnpm prisma:generate:*)",
+      "Bash(find:*)",
+      "Bash(npx shadcn@latest add:*)",
+      "Bash(ls:*)"
     ]
   },
   "enableAllProjectMcpServers": true,
