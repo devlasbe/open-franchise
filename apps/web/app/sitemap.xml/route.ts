@@ -2,6 +2,9 @@ import { BrandService } from '@/services/brand';
 import { NextResponse } from 'next/server';
 import constants from '@/constants';
 
+// 빌드 타임이 아닌 런타임에 동적 생성
+export const dynamic = 'force-dynamic';
+
 type Route = {
   url: string;
   priority: string;

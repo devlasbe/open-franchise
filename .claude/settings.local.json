@@ -28,7 +28,12 @@
       "Bash(pnpm prisma:generate:*)",
       "Bash(find:*)",
       "Bash(npx shadcn@latest add:*)",
-      "Bash(ls:*)"
+      "Bash(ls:*)",
+      "Bash(docker build:*)",
+      "Bash(docker rm:*)",
+      "Bash(docker run:*)",
+      "Bash(curl:*)",
+      "Bash(docker logs:*)"
     ]
   },
   "enableAllProjectMcpServers": true,
