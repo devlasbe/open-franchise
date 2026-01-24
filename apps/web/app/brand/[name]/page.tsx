@@ -7,6 +7,7 @@ import BrandHead from './BrandHead';
 import { BrandService } from '@/services/brand';
 import BrandInterior from './BrandInterior';
 import { SeoUtil } from '@/utils/seo';
+import CommentSection from './comments/CommentSection';
 
 type BrandPageParams = {
   params: {
@@ -88,6 +89,9 @@ const Layout = async ({ name }: { name: string }) => {
             <BrandStatistic statisticDataList={statisticDataList} />
           </FetchBoundary>
         )}
+        <FetchBoundary>
+          <CommentSection brandNm={decodeURIComponent(name)} />
+        </FetchBoundary>
       </div>
     </div>
   );
