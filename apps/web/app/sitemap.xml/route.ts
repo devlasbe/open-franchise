@@ -1,5 +1,6 @@
 import { BrandService } from '@/services/brand';
 import { NextResponse } from 'next/server';
+import constants from '@/constants';
 
 type Route = {
   url: string;
@@ -11,7 +12,7 @@ const formatDate = (date: Date): string => {
 };
 
 const fetchRoutes = async (): Promise<Route[]> => {
-  const baseUrl = process.env.NEXT_PUBLIC_DOMAIN;
+  const baseUrl = constants.DOMAIN;
 
   const staticRoutes: Route[] = [
     { url: `${baseUrl}/`, priority: '1' },
