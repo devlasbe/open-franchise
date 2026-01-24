@@ -35,7 +35,7 @@ pnpm prisma:migrate:dev   # DB 마이그레이션
 
 ## 앱 개요
 
-- **apps/server**: REST API 서버. Swagger 문서 `/swagger`, JWT 인증
+- **apps/server**: REST API 서버. Swagger `/swagger`, JWT 인증, 댓글/IP 차단 관리
 - **apps/web**: 프론트엔드. Server Components 우선, API 타입 자동 생성 (`pnpm swagger`)
 
 ## 코딩 컨벤션

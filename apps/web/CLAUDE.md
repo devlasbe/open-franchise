@@ -21,7 +21,9 @@ apps/web/
 │   ├── page.tsx           # 홈 페이지
 │   ├── search/            # 검색 페이지
 │   ├── brand/[name]/      # 브랜드 상세 (동적 라우트)
+│   │   └── comments/      # 댓글 컴포넌트 (CommentSection, CommentList 등)
 │   ├── admin/             # 관리자 페이지
+│   │   └── components/    # 관리자 탭 (DataCollectionTab, CommentsTab 등)
 │   └── login/             # 로그인 페이지
 ├── components/
 │   ├── ui/                # shadcn/ui 컴포넌트
@@ -32,9 +34,10 @@ apps/web/
 ├── services/              # API 서비스 클래스
 ├── hooks/                 # 커스텀 훅
 ├── context/               # React Context
-├── lib/                   # 유틸리티
+├── constants/             # 환경 상수 (API_BASE_URL, IS_DEV 등)
+├── lib/                   # 유틸리티 (utils.ts, cn)
 ├── types/                 # TypeScript 타입
-├── utils/                 # 헬퍼 함수
+├── utils/                 # fetchService, 헬퍼 함수
 └── tests/                 # E2E 테스트
 ```
 
@@ -133,7 +136,7 @@ type InputProps = React.InputHTMLAttributes<HTMLInputElement> & {
 
 ```typescript
 // services/brand.ts
-import { fetchService } from '@/lib/fetchService';
+import { fetchService } from '@/utils/fetchService';
 import { BrandResponseDto } from '@/types/apiTypes';
 
 export class BrandService {
@@ -157,7 +160,7 @@ export class BrandService {
 ### fetchService 사용
 
 ```typescript
-// lib/fetchService.ts
+// utils/fetchService.ts
 // Server Component와 Client Component 모두에서 사용 가능
 
 // Server Component에서
@@ -182,6 +185,67 @@ await AuthService.login({
 
 // 인증된 요청 (쿠키 자동 포함)
 const profile = await AuthService.getProfile();
+```
+
+### 주요 서비스 클래스
+
+| 서비스 | 경로 | 설명 |
+|--------|------|------|
+| BrandService | `services/brand.ts` | 브랜드 조회/검색 |
+| StatisticService | `services/statistic.ts` | 통계 데이터 |
+| AuthService | `services/auth.ts` | 인증/로그인 |
+| AdminService | `services/admin.ts` | 관리자 (데이터 수집, 댓글 관리, IP 차단) |
+| CommentService | `services/comment.ts` | 댓글 CRUD, 답글 |
+
+#### CommentService 예시
+
+```typescript
+// services/comment.ts
+import { fetchService } from '@/utils/fetchService';
+
+export class CommentService {
+  static async getComments(brandNm: string) {
+    return await fetchService<Comment[]>({
+      path: `brands/${brandNm}/comments`,
+    });
+  }
+
+  static async createComment(brandNm: string, data: CreateCommentDto) {
+    return await fetchService<Comment>({
+      path: `brands/${brandNm}/comments`,
+      init: { method: 'POST', body: JSON.stringify(data) },
+      isClient: true,
+    });
+  }
+
+  static async deleteComment(brandNm: string, id: number, password: string) {
+    return await fetchService({
+      path: `brands/${brandNm}/comments/${id}`,
+      init: { method: 'DELETE', body: JSON.stringify({ password }) },
+      isClient: true,
+    });
+  }
+}
+```
+
+## 상수 관리
+
+`constants/index.ts`에서 환경 상수를 관리합니다.
+
+```typescript
+// constants/index.ts
+export const API_BASE_URL = process.env.NODE_ENV === 'production'
+  ? process.env.NEXT_PUBLIC_API_URL_PROD
+  : process.env.NEXT_PUBLIC_API_URL_DEV;
+
+export const IS_DEV = process.env.NODE_ENV === 'development';
+export const DEFAULT_YEAR = new Date().getFullYear() - 1;
+```
+
+사용:
+
+```typescript
+import { API_BASE_URL, IS_DEV, DEFAULT_YEAR } from '@/constants';
 ```
 
 ## 상태 관리
@@ -229,15 +293,32 @@ import { cn } from '@/lib/utils';
 ### shadcn/ui 컴포넌트
 
 ```typescript
+// 기본 컴포넌트
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardContent,
-} from '@/components/ui/card';
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 
+// 폼 컴포넌트
+import { Label } from '@/components/ui/label';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Switch } from '@/components/ui/switch';
+
+// 오버레이 컴포넌트
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
+
+// 탭 컴포넌트
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+```
+
+#### 사용 예시
+
+```typescript
 <Card>
   <CardHeader>
     <CardTitle>브랜드 정보</CardTitle>
@@ -246,6 +327,15 @@ import {
     {/* 내용 */}
   </CardContent>
 </Card>
+
+<Tabs defaultValue="info">
+  <TabsList>
+    <TabsTrigger value="info">정보</TabsTrigger>
+    <TabsTrigger value="comments">댓글</TabsTrigger>
+  </TabsList>
+  <TabsContent value="info">...</TabsContent>
+  <TabsContent value="comments">...</TabsContent>
+</Tabs>
 ```
 
 ### 커스텀 폰트 사이즈

@@ -37,6 +37,8 @@ apps/server/src/
 ├── heads/          # 가맹본부
 ├── openApis/       # 공공 API 연동
 ├── users/          # 사용자
+├── comments/       # 댓글 (CRUD, 답글, 소프트 삭제)
+├── blocked-ips/    # IP 차단 (CIDR 지원, 만료일)
 ├── prisma/         # Prisma 서비스
 ├── common/         # 공통 (인터셉터, DTO, 유틸)
 └── app.module.ts
@@ -74,7 +76,9 @@ PORT=3001
 | 인증 쿠키 | `accessToken` (HttpOnly, 24시간) |
 | ValidationPipe | `transform: true`, `whitelist: true` |
 | CORS | `credentials: true` |
-| Prisma | `relationMode = "prisma"` |
+| Trust Proxy | `true` (클라이언트 IP 추적) |
+| Prisma Adapter | PrismaPg (네이티브 PostgreSQL) |
+| 환경별 설정 | `.env.{NODE_ENV}` 파일 지원 |
 
 ## Swagger
 
@@ -99,11 +103,36 @@ PORT=3001
 | JwtStrategy | JWT 토큰 검증 (쿠키) |
 | AdminStrategy | 관리자 권한 확인 |
 
+## API 엔드포인트
+
+### Comments (공개)
+
+| 메서드 | 경로 | 설명 |
+|--------|------|------|
+| GET | `/franchise/brands/:brandNm/comments` | 브랜드별 댓글 조회 |
+| POST | `/franchise/brands/:brandNm/comments` | 댓글/답글 작성 |
+| DELETE | `/franchise/brands/:brandNm/comments/:id` | 댓글 삭제 (비밀번호 확인) |
+
+### Comments (관리자)
+
+| 메서드 | 경로 | 설명 |
+|--------|------|------|
+| GET | `/franchise/admin/comments` | 전체 댓글 조회 (페이지네이션) |
+| DELETE | `/franchise/admin/comments/:id` | 댓글 강제 삭제 |
+
+### Blocked IPs (관리자)
+
+| 메서드 | 경로 | 설명 |
+|--------|------|------|
+| GET | `/franchise/admin/blocked-ips` | 차단 IP 목록 조회 |
+| POST | `/franchise/admin/blocked-ips` | IP 차단 추가 (CIDR 지원) |
+| DELETE | `/franchise/admin/blocked-ips/:id` | IP 차단 해제 |
+
 ## 관련 가이드
 
 | 가이드 | 경로 |
 |--------|------|
 | NestJS 코딩 규칙 | `.claude/rules/nestjs.md` |
-| DTO 작성 | `.claude/commands/dto.md` |
-| Swagger 문서화 | `.claude/commands/swagger.md` |
-| 새 모듈 생성 | `.claude/commands/new-module.md` |
+| DTO 작성 | `.claude/skills/dto/SKILL.md` |
+| Swagger 문서화 | `.claude/skills/swagger/SKILL.md` |
+| 새 모듈 생성 | `.claude/skills/new-module/SKILL.md` |
