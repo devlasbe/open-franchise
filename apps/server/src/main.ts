@@ -11,6 +11,10 @@ async function bootstrap() {
 
   app.setGlobalPrefix('franchise');
 
+  // 프록시 뒤에서 실행 시 클라이언트 IP 추적을 위해 설정
+  const expressApp = app.getHttpAdapter().getInstance();
+  expressApp.set('trust proxy', true);
+
   app.use(cookieParser());
 
   app.useGlobalInterceptors(new ErrorResponseInterceptor());
