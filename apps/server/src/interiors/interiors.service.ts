@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { HttpService } from '@nestjs/axios';
 import { ConfigService } from '@nestjs/config';
@@ -8,6 +8,8 @@ import constants from 'src/common/constants';
 
 @Injectable()
 export class InteriorsService {
+  private readonly logger = new Logger(InteriorsService.name);
+
   constructor(
     private configService: ConfigService,
     private prisma: PrismaService,
@@ -18,11 +20,7 @@ export class InteriorsService {
   private endPoint = constants.OPENAPI_INTERIOR_ENDPOINT;
 
   create(data: Interior) {
-    try {
-      return this.prisma.interior.create({ data });
-    } catch (error) {
-      throw error;
-    }
+    return this.prisma.interior.create({ data });
   }
 
   async findOne(brandMnno: string) {
@@ -47,29 +45,25 @@ export class InteriorsService {
     }
     if (!response) return;
     const result = this.create(response);
-    result.then((data) => console.log('save interior', data));
+    result.then((data) => this.logger.debug(`Saved interior: ${data.brandMnno}`));
     return response;
   }
 
   async findOneByOpenApi(params: { jngBizCrtraYr: string; brandMnno: string }) {
-    try {
-      const response = await this.httpService.axiosRef.get<OpenApiResponseDto<Interior>>(
-        this.endPoint,
-        {
-          params: {
-            resultType: 'json',
-            serviceKey: this.key,
-            pageNo: 1,
-            numOfRows: 1,
-            ...params,
-          },
+    const response = await this.httpService.axiosRef.get<OpenApiResponseDto<Interior>>(
+      this.endPoint,
+      {
+        params: {
+          resultType: 'json',
+          serviceKey: this.key,
+          pageNo: 1,
+          numOfRows: 1,
+          ...params,
         },
-      );
-      console.log(`Interior OpenApi -> year: ${params.jngBizCrtraYr}`, response?.data);
-      const data = response?.data?.items;
-      if (data?.length) return data[0];
-    } catch (error) {
-      throw error;
-    }
+      },
+    );
+    this.logger.debug(`Interior OpenApi -> year: ${params.jngBizCrtraYr}`);
+    const data = response?.data?.items;
+    if (data?.length) return data[0];
   }
 }

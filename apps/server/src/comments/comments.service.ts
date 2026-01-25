@@ -18,6 +18,7 @@ import {
 import { BlockedIp } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
 import { Comment } from '@prisma/client';
+import { PaginationUtil } from 'src/common/utils';
 
 const SALT_ROUNDS = 10;
 
@@ -101,12 +102,13 @@ export class CommentsService {
       brandNm,
       parentId: null,
     };
+    const { skip, take } = PaginationUtil.getSkipTake({ pageNo, pageSize });
 
     const [comments, totalCount] = await Promise.all([
       this.prisma.comment.findMany({
         where,
-        skip: (pageNo - 1) * pageSize,
-        take: pageSize,
+        skip,
+        take,
         orderBy: { createdAt: 'desc' },
         include: {
           replies: {
@@ -120,11 +122,16 @@ export class CommentsService {
     // 민감 정보 제거
     const sanitizedComments = comments.map((comment) => this.sanitizeComment(comment));
 
+    const { totalPages, currentPage } = PaginationUtil.createResult(sanitizedComments, totalCount, {
+      pageNo,
+      pageSize,
+    });
+
     return {
       comments: sanitizedComments,
       totalCount,
-      totalPages: Math.ceil(totalCount / pageSize),
-      currentPage: pageNo,
+      totalPages,
+      currentPage,
     };
   }
 
@@ -155,13 +162,14 @@ export class CommentsService {
 
   // 관리자용 API
   async findAllAdmin({ pageNo, pageSize, brandNm, ipAddress }: GetAdminCommentsReq) {
+    const { skip, take } = PaginationUtil.getSkipTake({ pageNo, pageSize });
     return this.prisma.comment.findMany({
       where: {
         ...(brandNm && { brandNm: { contains: brandNm, mode: 'insensitive' as const } }),
         ...(ipAddress && { ipAddress: { contains: ipAddress } }),
       },
-      skip: (pageNo - 1) * pageSize,
-      take: pageSize,
+      skip,
+      take,
       orderBy: { createdAt: 'desc' },
     });
   }

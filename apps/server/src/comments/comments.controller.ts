@@ -10,6 +10,7 @@ import {
   GetCommentsRes,
 } from './dto/comment.dto';
 import { Request } from 'express';
+import { IpUtil } from 'src/common/utils';
 
 @ApiTags('Comments')
 @Controller()
@@ -27,7 +28,7 @@ export class CommentsController {
   @ApiBody({ type: CreateCommentReq })
   @ApiOkResponse({ description: '댓글 작성', type: GetCommentRes })
   create(@Param('brandNm') brandNm: string, @Body() dto: CreateCommentReq, @Req() req: Request) {
-    const ipAddress = this.getClientIp(req);
+    const ipAddress = IpUtil.getClientIp(req);
     const userAgent = req.headers['user-agent'];
     return this.commentsService.create(decodeURIComponent(brandNm), dto, ipAddress, userAgent);
   }
@@ -36,7 +37,7 @@ export class CommentsController {
   @ApiBody({ type: CreateReplyReq })
   @ApiOkResponse({ description: '대댓글 작성', type: GetCommentRes })
   createReply(@Param('id') id: string, @Body() dto: CreateReplyReq, @Req() req: Request) {
-    const ipAddress = this.getClientIp(req);
+    const ipAddress = IpUtil.getClientIp(req);
     const userAgent = req.headers['user-agent'];
     return this.commentsService.createReply(id, dto, ipAddress, userAgent);
   }
@@ -46,14 +47,5 @@ export class CommentsController {
   @ApiOkResponse({ description: '댓글 삭제' })
   delete(@Param('id') id: string, @Body() dto: DeleteCommentReq) {
     return this.commentsService.delete(id, dto);
-  }
-
-  private getClientIp(req: Request): string {
-    const forwarded = req.headers['x-forwarded-for'];
-    if (forwarded) {
-      const ips = Array.isArray(forwarded) ? forwarded[0] : forwarded.split(',')[0];
-      return ips.trim();
-    }
-    return req.ip || req.socket.remoteAddress || 'unknown';
   }
 }

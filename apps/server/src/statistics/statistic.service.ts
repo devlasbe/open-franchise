@@ -1,17 +1,12 @@
 import { Injectable } from '@nestjs/common';
+import { Prisma } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { GetStatisticByFilterReq } from './dto/statistic.dto';
-import { ConfigService } from '@nestjs/config';
-
-const escapeRegex = (str: string) => str.replace(/\//g, '\\/');
+import { PaginationUtil, TextUtil } from 'src/common/utils';
 
 @Injectable()
 export class StatisticService {
-  constructor(
-    private readonly prisma: PrismaService,
-    private configService: ConfigService,
-  ) {}
-  private year = this.configService.get<string>('DEFAULT_YEAR');
+  constructor(private readonly prisma: PrismaService) {}
 
   findByName(name: string) {
     return this.prisma.statistic.findMany({
@@ -21,10 +16,10 @@ export class StatisticService {
   }
 
   findByFilter({ pageNo, pageSize, name, category, orderCol, orderSort }: GetStatisticByFilterReq) {
-    const buildWhereQuery = () => {
-      const where: any = {};
+    const buildWhereQuery = (): Prisma.StatisticWhereInput => {
+      const where: Prisma.StatisticWhereInput = {};
       if (name) where.brandNm = { contains: name, mode: 'insensitive' };
-      if (category) where.indutyMlsfcNm = { contains: escapeRegex(category) };
+      if (category) where.indutyMlsfcNm = { contains: TextUtil.escapeRegex(category) };
       return where;
     };
     const buildOrderQuery = () => {
@@ -34,6 +29,7 @@ export class StatisticService {
     };
     const where = buildWhereQuery();
     const orderBy = buildOrderQuery();
+    const { skip, take } = PaginationUtil.getSkipTake({ pageNo, pageSize });
     const result = this.prisma.statistic.findMany({
       distinct: ['brandNm'],
       where: {
@@ -43,8 +39,8 @@ export class StatisticService {
         ...where,
       },
       orderBy: [{ yr: 'desc' }, orderBy],
-      skip: (pageNo - 1) * pageSize,
-      take: pageSize,
+      skip,
+      take,
       include: { brand: true, startup: true },
     });
 
