@@ -32,6 +32,9 @@ export class SeoUtil {
           "naver-site-verification": "6dbb41bb68d95b0fe1420aeb5c58072eacd2116c",
         },
       },
+      other: {
+        "google-adsense-account": "ca-pub-5062353666072244",
+      },
     };
     return metadata;
   }
