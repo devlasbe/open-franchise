@@ -2,7 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import CommentList from './CommentList';
 import fetchService from '@/utils/fetchService';
 import { QueryParamsUtil } from '@/utils/queryParams';
-import { CommentsResponseType } from '@/services/comment';
+import type { GetCommentsRes, CommentListPayload } from '@/types/apiTypes';
 
 type CommentSectionPropsType = {
   brandNm: string;
@@ -10,9 +10,9 @@ type CommentSectionPropsType = {
 
 const PAGE_SIZE = 20;
 
-async function getInitialComments(brandNm: string): Promise<CommentsResponseType['payload']> {
+async function getInitialComments(brandNm: string): Promise<CommentListPayload> {
   try {
-    const response = await fetchService<CommentsResponseType>({
+    const response = await fetchService<GetCommentsRes>({
       path: QueryParamsUtil.convert(`brands/${encodeURIComponent(brandNm)}/comments`, {
         pageNo: 1,
         pageSize: PAGE_SIZE,

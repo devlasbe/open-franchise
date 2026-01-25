@@ -18,7 +18,7 @@ export interface Brand {
   /** 사업자등록번호 */
   brno: string;
   /** 법인등록번호 */
-  crno: string;
+  crno?: string;
   /** 가맹본부대표자명 */
   jnghdqrtrsRprsvNm: string;
   /** 브랜드명 */
@@ -28,9 +28,9 @@ export interface Brand {
   /** 업종중분류명 */
   indutyMlsfcNm: string;
   /** 주요상품명 */
-  majrGdsNm: string;
+  majrGdsNm?: string;
   /** 가맹사업개시일자 */
-  jngBizStrtDate: string;
+  jngBizStrtDate?: string;
   /** 가맹사업기준년도 */
   jngBizCrtraYr: string;
   /** 가맹 사업 현황 */
@@ -182,6 +182,28 @@ export interface GetBrandListRes {
   count: number;
 }
 
+export interface RejectedBrand {
+  /** 브랜드 명 */
+  brandNm: string;
+}
+
+export interface GetRejectedBrandListRes {
+  /** 응답 데이터 */
+  payload: RejectedBrand[];
+  /** 호출된 URI */
+  request: string;
+  /** payload 배열의 length */
+  count: number;
+}
+
+export interface AddRejectedBrandDto {
+  /**
+   * 브랜드 명
+   * @example "나쁜브랜드"
+   */
+  brandNm: string;
+}
+
 export interface Head {
   /** 홈페이지주소 */
   hmpgUrladr?: string;
@@ -303,7 +325,7 @@ export interface UserWithoutPassword {
   /** 사용자 이름 */
   name: string;
   /** 사용자 역할 */
-  role: 'USER' | 'ADMIN';
+  role: "USER" | "ADMIN";
   /**
    * 생성 일시
    * @format date-time
@@ -381,17 +403,306 @@ export interface CreateUserRes {
   request: string;
 }
 
-export interface RejectedBrand {
-  /** 브랜드명 */
-  brandNm: string;
+export interface GetCommentsReq {
+  /**
+   * 페이지 번호
+   * @example 1
+   */
+  pageNo: number;
+  /**
+   * 가져올 데이터 수
+   * @example 10
+   */
+  pageSize: number;
+  /** 정렬할 컬럼명 */
+  orderCol?: string;
+  /**
+   * 정렬 방법
+   * @example "asc | desc"
+   */
+  orderSort?: string;
 }
 
-export interface GetRejectedBrandListRes {
-  payload: RejectedBrand[];
+export interface Comment {
+  /** ID */
+  id: string;
+  /** 브랜드명 */
+  brandNm: string;
+  /** 부모 댓글 ID */
+  parentId?: string;
+  /** 닉네임 */
+  nickname?: string;
+  /** 내용 */
+  content: string;
+  /** 삭제 여부 */
+  isDeleted: boolean;
+  /**
+   * 생성 일시
+   * @format date-time
+   */
+  createdAt: string;
+  /**
+   * 수정 일시
+   * @format date-time
+   */
+  updatedAt: string;
+}
+
+export interface CommentWithReplies {
+  /** ID */
+  id: string;
+  /** 브랜드명 */
+  brandNm: string;
+  /** 부모 댓글 ID */
+  parentId?: string;
+  /** 닉네임 */
+  nickname?: string;
+  /** 내용 */
+  content: string;
+  /** 삭제 여부 */
+  isDeleted: boolean;
+  /**
+   * 생성 일시
+   * @format date-time
+   */
+  createdAt: string;
+  /**
+   * 수정 일시
+   * @format date-time
+   */
+  updatedAt: string;
+  /** 대댓글 목록 */
+  replies: Comment[];
+}
+
+export interface CommentListPayload {
+  /** 댓글 목록 */
+  comments: CommentWithReplies[];
+  /** 전체 댓글 수 */
+  totalCount: number;
+  /** 전체 페이지 수 */
+  totalPages: number;
+  /** 현재 페이지 */
+  currentPage: number;
+}
+
+export interface GetCommentsRes {
+  /** 응답 데이터 */
+  payload: CommentListPayload;
+  /** 호출된 URI */
   request: string;
+}
+
+export interface CreateCommentReq {
+  /**
+   * 닉네임 (빈값 시 익명)
+   * @example "프랜차이즈맨"
+   */
+  nickname?: string;
+  /**
+   * 비밀번호 (삭제 시 필요)
+   * @example "1234"
+   */
+  password: string;
+  /**
+   * 댓글 내용
+   * @example "이 브랜드 어떤가요?"
+   */
+  content: string;
+}
+
+export interface GetCommentRes {
+  /** 응답 데이터 */
+  payload: Comment;
+  /** 호출된 URI */
+  request: string;
+}
+
+export interface CreateReplyReq {
+  /**
+   * 닉네임 (빈값 시 익명)
+   * @example "프랜차이즈맨"
+   */
+  nickname?: string;
+  /**
+   * 비밀번호 (삭제 시 필요)
+   * @example "1234"
+   */
+  password: string;
+  /**
+   * 댓글 내용
+   * @example "이 브랜드 어떤가요?"
+   */
+  content: string;
+}
+
+export interface DeleteCommentReq {
+  /**
+   * 비밀번호
+   * @example "1234"
+   */
+  password: string;
+}
+
+export interface GetAdminCommentsReq {
+  /**
+   * 페이지 번호
+   * @example 1
+   */
+  pageNo: number;
+  /**
+   * 가져올 데이터 수
+   * @example 10
+   */
+  pageSize: number;
+  /** 정렬할 컬럼명 */
+  orderCol?: string;
+  /**
+   * 정렬 방법
+   * @example "asc | desc"
+   */
+  orderSort?: string;
+  /** 브랜드명 검색 */
+  brandNm?: string;
+  /** IP 주소 검색 */
+  ipAddress?: string;
+}
+
+export interface AdminComment {
+  /** ID */
+  id: string;
+  /** 브랜드명 */
+  brandNm: string;
+  /** 부모 댓글 ID */
+  parentId?: string;
+  /** 닉네임 */
+  nickname?: string;
+  /** 내용 */
+  content: string;
+  /** 삭제 여부 */
+  isDeleted: boolean;
+  /**
+   * 생성 일시
+   * @format date-time
+   */
+  createdAt: string;
+  /**
+   * 수정 일시
+   * @format date-time
+   */
+  updatedAt: string;
+  /** IP 주소 */
+  ipAddress: string;
+  /** User Agent */
+  userAgent?: string;
+}
+
+export interface GetAdminCommentsRes {
+  /** 응답 데이터 */
+  payload: AdminComment[];
+  /** 호출된 URI */
+  request: string;
+  /** payload 배열의 length */
   count: number;
 }
 
-export interface AddRejectedBrandDto {
-  brandNm: string;
+export interface BlockCommentIpReq {
+  /** 차단 사유 */
+  reason?: string;
+}
+
+export interface BlockedIp {
+  /** ID */
+  id: string;
+  /** IP 패턴 (CIDR 지원) */
+  ipPattern: string;
+  /** 차단 사유 */
+  reason?: string;
+  /** 차단한 관리자 ID */
+  blockedBy: string;
+  /**
+   * 차단 일시
+   * @format date-time
+   */
+  blockedAt: string;
+  /**
+   * 만료 일시
+   * @format date-time
+   */
+  expiresAt?: string;
+  /** 활성화 여부 */
+  isActive: boolean;
+}
+
+export interface BlockCommentIpRes {
+  /** 응답 데이터 */
+  payload: BlockedIp;
+  /** 호출된 URI */
+  request: string;
+}
+
+export interface CreateBlockedIpReq {
+  /**
+   * IP 패턴 (CIDR 지원)
+   * @example "192.168.1.0/24"
+   */
+  ipPattern: string;
+  /**
+   * 차단 사유
+   * @example "스팸 댓글"
+   */
+  reason?: string;
+  /** 만료 일시 (ISO 8601) */
+  expiresAt?: string;
+}
+
+export interface GetBlockedIpRes {
+  /** 응답 데이터 */
+  payload: BlockedIp;
+  /** 호출된 URI */
+  request: string;
+}
+
+export interface GetBlockedIpListReq {
+  /**
+   * 페이지 번호
+   * @example 1
+   */
+  pageNo: number;
+  /**
+   * 가져올 데이터 수
+   * @example 10
+   */
+  pageSize: number;
+  /** 정렬할 컬럼명 */
+  orderCol?: string;
+  /**
+   * 정렬 방법
+   * @example "asc | desc"
+   */
+  orderSort?: string;
+  /** IP 패턴 검색 */
+  ipPattern?: string;
+  /** 활성화 여부 필터 */
+  isActive?: boolean;
+}
+
+export interface GetBlockedIpListRes {
+  /** 응답 데이터 */
+  payload: BlockedIp[];
+  /** 호출된 URI */
+  request: string;
+  /** payload 배열의 length */
+  count: number;
+}
+
+export interface UpdateBlockedIpReq {
+  /** IP 패턴 (CIDR 지원) */
+  ipPattern?: string;
+  /** 차단 사유 */
+  reason?: string;
+  /** 만료 일시 (ISO 8601) */
+  expiresAt?: string;
+  /** 활성화 여부 */
+  isActive?: boolean;
 }

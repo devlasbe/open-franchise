@@ -1,7 +1,8 @@
 'use client';
 
 import { useEffect, useState, useCallback } from 'react';
-import { AdminService, AdminCommentType } from '@/services/admin';
+import { AdminService } from '@/services/admin';
+import type { AdminComment } from '@/types/apiTypes';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -18,7 +19,7 @@ import {
 const PAGE_SIZE = 10;
 
 export default function CommentsTab() {
-  const [comments, setComments] = useState<AdminCommentType[]>([]);
+  const [comments, setComments] = useState<AdminComment[]>([]);
   const [loading, setLoading] = useState(false);
   const [pageNo, setPageNo] = useState(1);
   const [totalCount, setTotalCount] = useState(0);
