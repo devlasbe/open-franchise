@@ -228,13 +228,13 @@ export default function BlockedIpsTab() {
       </CardHeader>
       <CardContent className="space-y-4">
         {/* 검색 필터 */}
-        <div className="flex gap-4 flex-wrap items-center">
+        <div className="flex flex-col sm:flex-row gap-4 flex-wrap items-stretch sm:items-center">
           <Input
             placeholder="IP 패턴 검색"
             value={ipPattern}
             onChange={(e) => setIpPattern(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
-            className="w-48"
+            className="w-full sm:w-48"
           />
           <div className="flex items-center gap-2">
             <Switch
@@ -246,13 +246,64 @@ export default function BlockedIpsTab() {
             />
             <Label htmlFor="activeOnly">활성화만</Label>
           </div>
-          <Button onClick={handleSearch} disabled={loading}>
+          <Button onClick={handleSearch} disabled={loading} className="w-full sm:w-auto">
             검색
           </Button>
         </div>
 
-        {/* 차단 IP 테이블 */}
-        <div className="border rounded-md">
+        {/* 모바일 카드 레이아웃 */}
+        <div className="md:hidden space-y-3">
+          {loading ? (
+            <div className="text-center py-8 text-muted-foreground">로딩 중...</div>
+          ) : blockedIps.length === 0 ? (
+            <div className="text-center py-8 text-muted-foreground">차단된 IP가 없습니다.</div>
+          ) : (
+            blockedIps.map((item) => (
+              <Card key={item.id} className="border">
+                <CardContent className="p-4 space-y-3">
+                  {/* 상단: IP 패턴 + 상태 배지 */}
+                  <div className="flex items-center justify-between">
+                    <span className="font-mono font-medium">{item.ipPattern}</span>
+                    {item.isActive ? (
+                      <Badge variant="destructive">활성</Badge>
+                    ) : (
+                      <Badge variant="secondary">비활성</Badge>
+                    )}
+                  </div>
+
+                  {/* 사유 */}
+                  {item.reason && <p className="text-sm">{item.reason}</p>}
+
+                  {/* 메타 정보: 차단일, 만료일 */}
+                  <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted-foreground">
+                    <span>차단일: {formatDate(item.blockedAt)}</span>
+                    <span>만료일: {formatDate(item.expiresAt)}</span>
+                  </div>
+
+                  {/* 액션 버튼 */}
+                  <div className="flex flex-wrap gap-2 pt-2 border-t">
+                    <Button variant="outline" size="sm" onClick={() => openEditDialog(item)}>
+                      수정
+                    </Button>
+                    <Button
+                      variant={item.isActive ? 'secondary' : 'default'}
+                      size="sm"
+                      onClick={() => handleToggleActive(item)}
+                    >
+                      {item.isActive ? '비활성화' : '활성화'}
+                    </Button>
+                    <Button variant="destructive" size="sm" onClick={() => handleDelete(item.id)}>
+                      삭제
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            ))
+          )}
+        </div>
+
+        {/* 데스크톱 테이블 */}
+        <div className="hidden md:block border rounded-md">
           <Table>
             <TableHeader>
               <TableRow>

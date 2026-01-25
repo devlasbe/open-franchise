@@ -109,28 +109,83 @@ export default function CommentsTab() {
       </CardHeader>
       <CardContent className="space-y-4">
         {/* 검색 필터 */}
-        <div className="flex gap-4 flex-wrap">
+        <div className="flex flex-col sm:flex-row gap-4 flex-wrap">
           <Input
             placeholder="브랜드명 검색"
             value={brandNm}
             onChange={(e) => setBrandNm(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
-            className="w-48"
+            className="w-full sm:w-48"
           />
           <Input
             placeholder="IP 주소 검색"
             value={ipAddress}
             onChange={(e) => setIpAddress(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
-            className="w-48"
+            className="w-full sm:w-48"
           />
-          <Button onClick={handleSearch} disabled={loading}>
+          <Button onClick={handleSearch} disabled={loading} className="w-full sm:w-auto">
             검색
           </Button>
         </div>
 
-        {/* 댓글 테이블 */}
-        <div className="border rounded-md">
+        {/* 모바일 카드 레이아웃 */}
+        <div className="md:hidden space-y-3">
+          {loading ? (
+            <div className="text-center py-8 text-muted-foreground">로딩 중...</div>
+          ) : comments.length === 0 ? (
+            <div className="text-center py-8 text-muted-foreground">댓글이 없습니다.</div>
+          ) : (
+            comments.map((comment) => (
+              <Card key={comment.id} className="border">
+                <CardContent className="p-4 space-y-3">
+                  {/* 상단: 브랜드명 + 상태 배지 */}
+                  <div className="flex items-center justify-between">
+                    <span className="font-medium truncate mr-2">{comment.brandNm}</span>
+                    {comment.isDeleted ? (
+                      <Badge variant="secondary">삭제됨</Badge>
+                    ) : (
+                      <Badge variant="default">정상</Badge>
+                    )}
+                  </div>
+
+                  {/* 내용 */}
+                  <p className="text-sm">{comment.content}</p>
+
+                  {/* 메타 정보: 닉네임, IP, 작성일 */}
+                  <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted-foreground">
+                    <span>닉네임: {comment.nickname || '익명'}</span>
+                    <span className="font-mono">IP: {comment.ipAddress}</span>
+                    <span>{formatDate(comment.createdAt)}</span>
+                  </div>
+
+                  {/* 액션 버튼 */}
+                  <div className="flex gap-2 pt-2 border-t">
+                    {!comment.isDeleted && (
+                      <Button
+                        variant="destructive"
+                        size="sm"
+                        onClick={() => handleDelete(comment.id)}
+                      >
+                        삭제
+                      </Button>
+                    )}
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => handleBlockIp(comment.id, comment.ipAddress)}
+                    >
+                      IP차단
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            ))
+          )}
+        </div>
+
+        {/* 데스크톱 테이블 */}
+        <div className="hidden md:block border rounded-md">
           <Table>
             <TableHeader>
               <TableRow>
