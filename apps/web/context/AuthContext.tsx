@@ -5,13 +5,13 @@ import { AuthService } from '@/services/auth';
 import { UserWithoutPassword } from '@/types/apiTypes';
 import { useRouter } from 'next/navigation';
 
-interface AuthContextType {
+type AuthContextType = {
   user: UserWithoutPassword | null;
   isLoggedIn: boolean;
   isAdmin: boolean;
   isLoading: boolean;
   logout: () => void;
-}
+};
 
 export const AuthContext = createContext<AuthContextType | undefined>(undefined);
 

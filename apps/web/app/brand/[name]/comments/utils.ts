@@ -1,4 +1,4 @@
-type ValidateCommentFormParams = {
+type ValidateCommentFormParamsType = {
   password: string;
   content: string;
 };
@@ -6,7 +6,7 @@ type ValidateCommentFormParams = {
 export function validateCommentForm({
   password,
   content,
-}: ValidateCommentFormParams): string | null {
+}: ValidateCommentFormParamsType): string | null {
   if (!password || password.length < 4) {
     return '비밀번호는 4자 이상이어야 합니다';
   }

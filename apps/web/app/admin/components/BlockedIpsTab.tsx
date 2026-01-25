@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState, useCallback } from 'react';
-import { AdminService, BlockedIp } from '@/services/admin';
+import { AdminService, BlockedIpType } from '@/services/admin';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -28,14 +28,14 @@ import {
 
 const PAGE_SIZE = 10;
 
-type BlockedIpForm = {
+type BlockedIpFormType = {
   ipPattern: string;
   reason: string;
   expiresAt: string;
   isActive: boolean;
 };
 
-const initialForm: BlockedIpForm = {
+const initialForm: BlockedIpFormType = {
   ipPattern: '',
   reason: '',
   expiresAt: '',
@@ -43,7 +43,7 @@ const initialForm: BlockedIpForm = {
 };
 
 export default function BlockedIpsTab() {
-  const [blockedIps, setBlockedIps] = useState<BlockedIp[]>([]);
+  const [blockedIps, setBlockedIps] = useState<BlockedIpType[]>([]);
   const [loading, setLoading] = useState(false);
   const [pageNo, setPageNo] = useState(1);
   const [totalCount, setTotalCount] = useState(0);
@@ -52,7 +52,7 @@ export default function BlockedIpsTab() {
 
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
-  const [formData, setFormData] = useState<BlockedIpForm>(initialForm);
+  const [formData, setFormData] = useState<BlockedIpFormType>(initialForm);
   const [editingId, setEditingId] = useState<string | null>(null);
 
   const totalPages = Math.ceil(totalCount / PAGE_SIZE);
@@ -104,7 +104,7 @@ export default function BlockedIpsTab() {
     }
   };
 
-  const openEditDialog = (item: BlockedIp) => {
+  const openEditDialog = (item: BlockedIpType) => {
     setEditingId(item.id);
     setFormData({
       ipPattern: item.ipPattern,
@@ -152,7 +152,7 @@ export default function BlockedIpsTab() {
     }
   };
 
-  const handleToggleActive = async (item: BlockedIp) => {
+  const handleToggleActive = async (item: BlockedIpType) => {
     try {
       await AdminService.updateBlockedIp(item.id, {
         isActive: !item.isActive,

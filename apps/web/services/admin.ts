@@ -1,7 +1,7 @@
 import fetchService from '@/utils/fetchService';
 
 // 타입 정의
-export type AdminComment = {
+export type AdminCommentType = {
   id: string;
   brandNm: string;
   parentId: string | null;
@@ -14,7 +14,7 @@ export type AdminComment = {
   updatedAt: string;
 };
 
-export type BlockedIp = {
+export type BlockedIpType = {
   id: string;
   ipPattern: string;
   reason: string | null;
@@ -24,20 +24,20 @@ export type BlockedIp = {
   isActive: boolean;
 };
 
-type AdminCommentListRes = {
-  payload: AdminComment[];
+type AdminCommentListResType = {
+  payload: AdminCommentType[];
   request: string;
   count: number;
 };
 
-type BlockedIpListRes = {
-  payload: BlockedIp[];
+type BlockedIpListResType = {
+  payload: BlockedIpType[];
   request: string;
   count: number;
 };
 
-type BlockedIpRes = {
-  payload: BlockedIp;
+type BlockedIpResType = {
+  payload: BlockedIpType;
   request: string;
 };
 
@@ -67,7 +67,7 @@ export class AdminService {
       ...(params.ipAddress && { ipAddress: params.ipAddress }),
     }).toString();
 
-    return fetchService<AdminCommentListRes>({
+    return fetchService<AdminCommentListResType>({
       path: `admin/comments?${query}`,
       isClient: true,
       init: {
@@ -89,7 +89,7 @@ export class AdminService {
   }
 
   static async blockCommentIp(commentId: string, reason?: string) {
-    return fetchService<BlockedIpRes>({
+    return fetchService<BlockedIpResType>({
       path: `admin/comments/${commentId}/block-ip`,
       isClient: true,
       init: {
@@ -115,7 +115,7 @@ export class AdminService {
       ...(params.isActive !== undefined && { isActive: params.isActive.toString() }),
     }).toString();
 
-    return fetchService<BlockedIpListRes>({
+    return fetchService<BlockedIpListResType>({
       path: `admin/blocked-ips?${query}`,
       isClient: true,
       init: {
@@ -126,7 +126,7 @@ export class AdminService {
   }
 
   static async createBlockedIp(data: { ipPattern: string; reason?: string; expiresAt?: string }) {
-    return fetchService<BlockedIpRes>({
+    return fetchService<BlockedIpResType>({
       path: 'admin/blocked-ips',
       isClient: true,
       init: {
@@ -142,7 +142,7 @@ export class AdminService {
     id: string,
     data: { ipPattern?: string; reason?: string; expiresAt?: string; isActive?: boolean },
   ) {
-    return fetchService<BlockedIpRes>({
+    return fetchService<BlockedIpResType>({
       path: `admin/blocked-ips/${id}`,
       isClient: true,
       init: {

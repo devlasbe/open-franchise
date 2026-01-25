@@ -3,7 +3,7 @@
 import { Button } from '@/components/ui/button';
 import { cn } from '@/utils/cn';
 
-type CommentPaginationProps = {
+type CommentPaginationPropsType = {
   currentPage: number;
   totalPages: number;
   onPageChange: (page: number) => void;
@@ -13,7 +13,7 @@ export default function CommentPagination({
   currentPage,
   totalPages,
   onPageChange,
-}: CommentPaginationProps) {
+}: CommentPaginationPropsType) {
   if (totalPages <= 1) return null;
 
   const getPageNumbers = () => {

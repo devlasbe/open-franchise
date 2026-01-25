@@ -1,21 +1,21 @@
 'use client';
 
 import { useState, useCallback } from 'react';
-import { Comment, CommentService, CommentsResponse } from '@/services/comment';
+import { CommentType, CommentService, CommentsResponseType } from '@/services/comment';
 import CommentForm from './CommentForm';
 import CommentItem from './CommentItem';
 import CommentPagination from './CommentPagination';
 import { ApiError } from '@/utils/fetchService';
 
-type CommentListProps = {
+type CommentListPropsType = {
   brandNm: string;
-  initialData: CommentsResponse['payload'];
+  initialData: CommentsResponseType['payload'];
 };
 
 const PAGE_SIZE = 20;
 
-export default function CommentList({ brandNm, initialData }: CommentListProps) {
-  const [comments, setComments] = useState<Comment[]>(initialData.comments);
+export default function CommentList({ brandNm, initialData }: CommentListPropsType) {
+  const [comments, setComments] = useState<CommentType[]>(initialData.comments);
   const [totalCount, setTotalCount] = useState(initialData.totalCount);
   const [totalPages, setTotalPages] = useState(initialData.totalPages);
   const [currentPage, setCurrentPage] = useState(initialData.currentPage);

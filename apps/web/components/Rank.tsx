@@ -11,12 +11,12 @@ import {
 } from '@/components/ui/carousel';
 import Link from 'next/link';
 
-type RankProps = {
+type RankPropsType = {
   category: string;
   title: string;
 };
 
-export default async function Rank({ category, title }: RankProps) {
+export default async function Rank({ category, title }: RankPropsType) {
   const chickenList = await StatisticService.getStatisticByFilter({
     category,
     pageNo: 1,
