@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
+import { Prisma } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { GetBrandListReq } from './dto/brand.dto';
 import { Brand } from './entities/brand.entity';
 import { HeadsService } from 'src/heads/heads.service';
-
-const escapeRegex = (str: string) => str.replace(/\//g, '\\/');
+import { PaginationUtil, TextUtil } from 'src/common/utils';
 
 @Injectable()
 export class BrandService {
@@ -28,10 +28,10 @@ export class BrandService {
   }
 
   findByFilter({ pageNo, pageSize, category, name, orderCol, orderSort }: GetBrandListReq) {
-    const buildWhereQuery = () => {
-      const where: any = {};
+    const buildWhereQuery = (): Prisma.BrandWhereInput => {
+      const where: Prisma.BrandWhereInput = {};
       if (name) where.brandNm = { contains: name, mode: 'insensitive' };
-      if (category) where.indutyMlsfcNm = { contains: escapeRegex(category) };
+      if (category) where.indutyMlsfcNm = { contains: TextUtil.escapeRegex(category) };
       return where;
     };
     const buildOrderQuery = () => {
@@ -41,9 +41,10 @@ export class BrandService {
     };
     const where = buildWhereQuery();
     const orderBy = buildOrderQuery();
+    const { skip, take } = PaginationUtil.getSkipTake({ pageNo, pageSize });
     const result = this.prisma.brand.findMany({
-      skip: (pageNo - 1) * pageSize,
-      take: pageSize,
+      skip,
+      take,
       where,
       orderBy,
       include: {
@@ -58,12 +59,13 @@ export class BrandService {
   }
 
   async findAllRejected({ pageNo, pageSize, name }: GetBrandListReq) {
-    const where: any = {};
+    const where: Prisma.RejectedBrandWhereInput = {};
     if (name) where.brandNm = { contains: name, mode: 'insensitive' };
+    const { skip, take } = PaginationUtil.getSkipTake({ pageNo, pageSize });
 
     return this.prisma.rejectedBrand.findMany({
-      skip: (pageNo - 1) * pageSize,
-      take: pageSize,
+      skip,
+      take,
       where,
     });
   }

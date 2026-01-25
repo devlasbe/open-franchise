@@ -1,7 +1,8 @@
 'use client';
 
 import { useEffect, useState, useCallback } from 'react';
-import { AdminService, BlockedIpType } from '@/services/admin';
+import { AdminService } from '@/services/admin';
+import type { BlockedIp } from '@/types/apiTypes';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -43,7 +44,7 @@ const initialForm: BlockedIpFormType = {
 };
 
 export default function BlockedIpsTab() {
-  const [blockedIps, setBlockedIps] = useState<BlockedIpType[]>([]);
+  const [blockedIps, setBlockedIps] = useState<BlockedIp[]>([]);
   const [loading, setLoading] = useState(false);
   const [pageNo, setPageNo] = useState(1);
   const [totalCount, setTotalCount] = useState(0);
@@ -104,7 +105,7 @@ export default function BlockedIpsTab() {
     }
   };
 
-  const openEditDialog = (item: BlockedIpType) => {
+  const openEditDialog = (item: BlockedIp) => {
     setEditingId(item.id);
     setFormData({
       ipPattern: item.ipPattern,
@@ -152,7 +153,7 @@ export default function BlockedIpsTab() {
     }
   };
 
-  const handleToggleActive = async (item: BlockedIpType) => {
+  const handleToggleActive = async (item: BlockedIp) => {
     try {
       await AdminService.updateBlockedIp(item.id, {
         isActive: !item.isActive,
@@ -164,7 +165,7 @@ export default function BlockedIpsTab() {
     }
   };
 
-  const formatDate = (dateString: string | null) => {
+  const formatDate = (dateString?: string | null) => {
     if (!dateString) return '-';
     return new Date(dateString).toLocaleDateString('ko-KR');
   };

@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { CommentType } from '@/services/comment';
+import type { Comment, CommentWithReplies } from '@/types/apiTypes';
 import DeleteCommentDialog from './DeleteCommentDialog';
 import BlockIpDialog from './BlockIpDialog';
 import ReplyForm from './ReplyForm';
@@ -11,7 +11,7 @@ import { formatRelativeTime } from './utils';
 import { useAuth } from '@/hooks/useAuth';
 
 type CommentItemPropsType = {
-  comment: CommentType;
+  comment: Comment | CommentWithReplies;
   onReply: (
     commentId: string,
     data: { nickname: string; password: string; content: string },
@@ -104,7 +104,7 @@ export default function CommentItem({
           isLoading={isLoading}
         />
       )}
-      {comment.replies && comment.replies.length > 0 && (
+      {'replies' in comment && comment.replies && comment.replies.length > 0 && (
         <div className="mt-3 space-y-2">
           {comment.replies.map((reply) => (
             <CommentItem

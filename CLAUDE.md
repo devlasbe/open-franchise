@@ -43,6 +43,7 @@ pnpm prisma:migrate:dev   # DB 마이그레이션
 - TypeScript 필수, `any` 금지, `type` 선호
 - 네이밍: 파일 camelCase, 컴포넌트 PascalCase, 상수 UPPER_SNAKE_CASE
 - 포맷팅/린트: `.claude/rules/lint.md` 참조
+- **타입 동기화**: 웹에서 서버 타입 사용 시 반드시 `pnpm swagger`로 동기화 후 `apiTypes` 사용
 
 ## 참고
 

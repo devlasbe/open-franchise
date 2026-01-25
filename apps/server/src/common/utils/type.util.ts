@@ -1,5 +1,6 @@
 import { mixin } from '@nestjs/common';
 import {
+  PaginatedResponse,
   SuccessResponse,
   SuccessResponseList,
 } from '../interceptors/success-response/success-response.dto';
@@ -24,5 +25,12 @@ export class TypeUtil {
       payload: T;
     }
     return class SuccessResponseList extends mixin(Class) {};
+  }
+  static getPaginatedResponse<T extends Constructor>(Base: T) {
+    class Class extends PaginatedResponse<T> {
+      @ApiProperty({ type: [Base], description: '응답 데이터' })
+      payload: T[];
+    }
+    return class PaginatedResponse extends mixin(Class) {};
   }
 }

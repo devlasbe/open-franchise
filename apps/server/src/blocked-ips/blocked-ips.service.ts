@@ -2,6 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateBlockedIpReq, GetBlockedIpListReq, UpdateBlockedIpReq } from './dto/blocked-ip.dto';
 import { BlockedIp } from '@prisma/client';
+import { IpUtil, PaginationUtil } from 'src/common/utils';
 
 @Injectable()
 export class BlockedIpsService {
@@ -24,9 +25,10 @@ export class BlockedIpsService {
     ipPattern,
     isActive,
   }: GetBlockedIpListReq): Promise<BlockedIp[]> {
+    const { skip, take } = PaginationUtil.getSkipTake({ pageNo, pageSize });
     return this.prisma.blockedIp.findMany({
-      skip: (pageNo - 1) * pageSize,
-      take: pageSize,
+      skip,
+      take,
       where: {
         ...(ipPattern && { ipPattern: { contains: ipPattern } }),
         ...(isActive !== undefined && { isActive }),
@@ -88,39 +90,11 @@ export class BlockedIpsService {
     });
 
     for (const pattern of cidrPatterns) {
-      if (this.isIpInCidr(ipAddress, pattern.ipPattern)) {
+      if (IpUtil.isIpInCidr(ipAddress, pattern.ipPattern)) {
         return true;
       }
     }
 
     return false;
-  }
-
-  private isIpInCidr(ip: string, cidr: string): boolean {
-    const [range, bits] = cidr.split('/');
-    const mask = parseInt(bits, 10);
-
-    if (isNaN(mask) || mask < 0 || mask > 32) return false;
-
-    const ipLong = this.ipToLong(ip);
-    const rangeLong = this.ipToLong(range);
-
-    if (ipLong === null || rangeLong === null) return false;
-
-    const maskLong = mask === 0 ? 0 : -1 << (32 - mask);
-    return (ipLong & maskLong) === (rangeLong & maskLong);
-  }
-
-  private ipToLong(ip: string): number | null {
-    const parts = ip.split('.');
-    if (parts.length !== 4) return null;
-
-    let result = 0;
-    for (const part of parts) {
-      const num = parseInt(part, 10);
-      if (isNaN(num) || num < 0 || num > 255) return null;
-      result = result * 256 + num;
-    }
-    return result >>> 0;
   }
 }

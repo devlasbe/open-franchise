@@ -1,5 +1,5 @@
 import { HttpService } from '@nestjs/axios';
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { GetHeadReq } from './dto/head.dto';
@@ -8,6 +8,8 @@ import { OpenApiResponseDto } from 'src/openApis/dto/openApi.dto';
 
 @Injectable()
 export class HeadsService {
+  private readonly logger = new Logger(HeadsService.name);
+
   constructor(
     private configService: ConfigService,
     private prisma: PrismaService,
@@ -44,29 +46,22 @@ export class HeadsService {
     }
     if (!response) return;
     const result = this.create(response);
-    result.then((data) => console.log('save head', data));
+    result.then((data) => this.logger.debug(`Saved head: ${data.jnghdqrtrsMnno}`));
     return response;
   }
 
   async findOneByOpenApi(params: GetHeadReq & { jngBizCrtraYr: string }) {
-    try {
-      const response = await this.httpService.axiosRef.get<OpenApiResponseDto<Head>>(
-        this.endPoint,
-        {
-          params: {
-            resultType: 'json',
-            serviceKey: this.key,
-            pageNo: 1,
-            numOfRows: 1,
-            ...params,
-          },
-        },
-      );
-      console.log(`Head OpenApi -> year: ${this.year}`, response.data);
-      const data = response?.data?.items;
-      if (data?.length) return data[0];
-    } catch (error) {
-      throw error;
-    }
+    const response = await this.httpService.axiosRef.get<OpenApiResponseDto<Head>>(this.endPoint, {
+      params: {
+        resultType: 'json',
+        serviceKey: this.key,
+        pageNo: 1,
+        numOfRows: 1,
+        ...params,
+      },
+    });
+    this.logger.debug(`Head OpenApi -> year: ${params.jngBizCrtraYr}`);
+    const data = response?.data?.items;
+    if (data?.length) return data[0];
   }
 }
