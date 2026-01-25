@@ -1,4 +1,5 @@
 import { Noto_Sans_KR } from 'next/font/google';
+import { GoogleAnalytics } from '@next/third-parties/google';
 import './globals.css';
 import Header from '@/components/header/Header';
 import Footer from '@/components/footer/Footer';
@@ -36,6 +37,7 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body className={`${notoSansKr.className} antialiased`}>
+        <GoogleAnalytics gaId="G-W04ZNBZ5X1" />
         <AuthProvider initialUser={user}>
           <Analytics />
           <div className="flex justify-center w-full min-h-dvh">
