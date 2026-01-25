@@ -10,6 +10,7 @@ const constants = {
   IS_DEV: process.env.NODE_ENV === 'development',
   IS_PROD: process.env.NODE_ENV === 'production',
   NODE_ENV: process.env.NODE_ENV || 'development',
+  CACHE_REVALIDATE_TIME: 43200, // 12시간 (초 단위)
 } as const;
 
 export default constants;
