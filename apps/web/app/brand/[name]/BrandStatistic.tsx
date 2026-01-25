@@ -1,8 +1,4 @@
-import Chart, {
-  ChartColorProps,
-  ChartTypeProps,
-  ChartYAxisFormatProps,
-} from '@/components/chart/Chart';
+import Chart, { ChartColorType, ChartType, ChartYAxisFormatType } from '@/components/chart/Chart';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import Summary from '@/components/ui/summary';
 import { Statistic } from '@/types/apiTypes';
@@ -67,22 +63,22 @@ export default function BrandStatistic({ statisticDataList }: { statisticDataLis
   );
 }
 
-type LineList = {
+type LineListType = {
   [key: string]: {
     title: string;
     label: string;
     unit: string;
     chart: {
-      type?: ChartTypeProps;
+      type?: ChartType;
       xAxis: string;
-      color: ChartColorProps;
-      yAxisFormat?: ChartYAxisFormatProps;
+      color: ChartColorType;
+      yAxisFormat?: ChartYAxisFormatType;
     };
   };
 };
 
 type StatisticLayoutListType = {
-  line: LineList;
+  line: LineListType;
 };
 
 const statisticLayoutList: StatisticLayoutListType[] = [

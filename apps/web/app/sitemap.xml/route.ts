@@ -5,7 +5,7 @@ import constants from '@/constants';
 // 빌드 타임이 아닌 런타임에 동적 생성
 export const dynamic = 'force-dynamic';
 
-type Route = {
+type RouteType = {
   url: string;
   priority: string;
 };
@@ -14,15 +14,15 @@ const formatDate = (date: Date): string => {
   return date.toISOString().split('T')[0];
 };
 
-const fetchRoutes = async (): Promise<Route[]> => {
+const fetchRoutes = async (): Promise<RouteType[]> => {
   const baseUrl = constants.DOMAIN;
 
-  const staticRoutes: Route[] = [
+  const staticRoutes: RouteType[] = [
     { url: `${baseUrl}/`, priority: '1' },
     { url: `${baseUrl}/search`, priority: '0.9' },
   ];
 
-  const brandRoute: Route[] = [];
+  const brandRoute: RouteType[] = [];
   let pageNo = 1;
   while (1) {
     const dataList = (await BrandService.getBrandList({ pageNo, pageSize: 1000 }, true))?.payload;
@@ -39,7 +39,7 @@ const fetchRoutes = async (): Promise<Route[]> => {
   return [...staticRoutes, ...brandRoute];
 };
 
-const generateSitemap = (routes: Route[]) => {
+const generateSitemap = (routes: RouteType[]) => {
   const escapeXml = (str: string) => {
     return str
       .replace(/&/g, '&amp;')

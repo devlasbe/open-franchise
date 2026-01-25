@@ -30,18 +30,39 @@ export default function SearchInput() {
 - 브라우저 API 접근 (`window`, `localStorage` 등)
 - 외부 클라이언트 라이브러리 사용
 
-## Props 정의
+## 타입 정의
+
+### 네이밍 규칙 (필수)
+
+모든 타입은 반드시 `xxxType` postfix를 사용합니다:
 
 ```typescript
-// type 사용
-type CardProps = {
+// ✅ 올바른 예시
+type CommentType = { id: string; content: string; };
+type CommentsResponseType = { payload: CommentType[]; };
+type CardPropsType = { title: string; children: React.ReactNode; };
+type ButtonPropsType = React.ButtonHTMLAttributes<HTMLButtonElement> & {
+  variant?: 'primary' | 'secondary';
+};
+
+// ❌ 금지
+type Comment = { ... };       // Type postfix 누락
+type CommentsResponse = { ... };
+interface CardProps { ... };  // interface 대신 type 사용
+```
+
+### Props 타입
+
+```typescript
+// 기본 Props
+type CardPropsType = {
   title: string;
   description?: string;
   children: React.ReactNode;
 };
 
 // HTML 속성 확장 시
-type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
+type ButtonPropsType = React.ButtonHTMLAttributes<HTMLButtonElement> & {
   variant?: 'primary' | 'secondary';
   isLoading?: boolean;
 };
@@ -134,13 +155,44 @@ import { cn } from '@/lib/utils';
 >
 ```
 
-### 반응형 디자인
+### 반응형 디자인 (필수)
+
+> **모든 화면과 컴포넌트는 반드시 모바일 반응형을 고려해야 합니다.**
 
 모바일 우선 접근:
 
 ```typescript
+// 패딩/마진 반응형
 <div className="px-4 sm:px-8 md:px-16 lg:px-24">
+
+// 그리드 반응형
 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+
+// 입력 폼 반응형
+<div className="flex flex-col sm:flex-row gap-4">
+  <Input className="w-full sm:w-48" />
+  <Button className="w-full sm:w-auto">검색</Button>
+</div>
+```
+
+### Dual Layout (테이블 → 카드)
+
+데이터 목록은 모바일에서 카드, 데스크톱에서 테이블로 표시:
+
+```typescript
+{/* 모바일: 카드 */}
+<div className="md:hidden space-y-3">
+  {items.map((item) => (
+    <Card key={item.id}>
+      <CardContent className="p-4">...</CardContent>
+    </Card>
+  ))}
+</div>
+
+{/* 데스크톱: 테이블 */}
+<div className="hidden md:block">
+  <Table>...</Table>
+</div>
 ```
 
 ## shadcn/ui 사용
@@ -252,3 +304,6 @@ import Image from 'next/image';
 - Client Component에서 async 함수 직접 사용 금지 (useEffect 내에서 호출)
 - `document`, `window`를 Server Component에서 접근 금지
 - 불필요한 `'use client'` 남발 금지
+- **모바일 반응형 미고려 금지** - 모든 화면/컴포넌트는 모바일 대응 필수
+- **타입 정의 시 `xxxType` postfix 누락 금지** - 모든 타입은 Type으로 끝나야 함
+- `interface` 사용 금지 - `type` 키워드만 사용

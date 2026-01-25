@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Comment } from '@/services/comment';
+import { CommentType } from '@/services/comment';
 import DeleteCommentDialog from './DeleteCommentDialog';
 import BlockIpDialog from './BlockIpDialog';
 import ReplyForm from './ReplyForm';
@@ -10,8 +10,8 @@ import { cn } from '@/utils/cn';
 import { formatRelativeTime } from './utils';
 import { useAuth } from '@/hooks/useAuth';
 
-type CommentItemProps = {
-  comment: Comment;
+type CommentItemPropsType = {
+  comment: CommentType;
   onReply: (
     commentId: string,
     data: { nickname: string; password: string; content: string },
@@ -29,7 +29,7 @@ export default function CommentItem({
   onAdminDelete,
   onBlockIp,
   isReply = false,
-}: CommentItemProps) {
+}: CommentItemPropsType) {
   const [showReplyForm, setShowReplyForm] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const { isAdmin } = useAuth();

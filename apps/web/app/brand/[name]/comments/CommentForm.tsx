@@ -6,7 +6,7 @@ import { Input } from '@/components/ui/input';
 import { cn } from '@/utils/cn';
 import { validateCommentForm } from './utils';
 
-type CommentFormProps = {
+type CommentFormPropsType = {
   onSubmit: (data: { nickname: string; password: string; content: string }) => Promise<void>;
   isLoading?: boolean;
   placeholder?: string;
@@ -16,7 +16,7 @@ export default function CommentForm({
   onSubmit,
   isLoading = false,
   placeholder = '댓글을 입력하세요',
-}: CommentFormProps) {
+}: CommentFormPropsType) {
   const [nickname, setNickname] = useState('');
   const [password, setPassword] = useState('');
   const [content, setContent] = useState('');

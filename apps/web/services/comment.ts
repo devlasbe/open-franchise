@@ -1,7 +1,7 @@
 import fetchService from '@/utils/fetchService';
 import { QueryParamsUtil } from '@/utils/queryParams';
 
-export type Comment = {
+export type CommentType = {
   id: string;
   brandNm: string;
   parentId: string | null;
@@ -10,46 +10,46 @@ export type Comment = {
   isDeleted: boolean;
   createdAt: string;
   updatedAt: string;
-  replies?: Comment[];
+  replies?: CommentType[];
 };
 
-export type CommentsResponse = {
+export type CommentsResponseType = {
   payload: {
-    comments: Comment[];
+    comments: CommentType[];
     totalCount: number;
     totalPages: number;
     currentPage: number;
   };
 };
 
-export type GetCommentsParams = {
+export type GetCommentsParamsType = {
   pageNo: number;
   pageSize: number;
 };
 
-export type CreateCommentParams = {
+export type CreateCommentParamsType = {
   nickname?: string;
   password: string;
   content: string;
 };
 
-export type CreateReplyParams = CreateCommentParams;
+export type CreateReplyParamsType = CreateCommentParamsType;
 
-export type DeleteCommentParams = {
+export type DeleteCommentParamsType = {
   password: string;
 };
 
 export class CommentService {
-  static async getComments(brandNm: string, params: GetCommentsParams) {
-    const data = await fetchService<CommentsResponse>({
+  static async getComments(brandNm: string, params: GetCommentsParamsType) {
+    const data = await fetchService<CommentsResponseType>({
       path: QueryParamsUtil.convert(`brands/${encodeURIComponent(brandNm)}/comments`, params),
       isClient: true,
     });
     return data;
   }
 
-  static async createComment(brandNm: string, data: CreateCommentParams) {
-    return await fetchService<{ payload: Comment }>({
+  static async createComment(brandNm: string, data: CreateCommentParamsType) {
+    return await fetchService<{ payload: CommentType }>({
       path: `brands/${encodeURIComponent(brandNm)}/comments`,
       init: {
         method: 'POST',
@@ -62,8 +62,8 @@ export class CommentService {
     });
   }
 
-  static async createReply(commentId: string, data: CreateReplyParams) {
-    return await fetchService<{ payload: Comment }>({
+  static async createReply(commentId: string, data: CreateReplyParamsType) {
+    return await fetchService<{ payload: CommentType }>({
       path: `comments/${commentId}/replies`,
       init: {
         method: 'POST',

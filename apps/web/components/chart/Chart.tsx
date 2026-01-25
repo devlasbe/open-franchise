@@ -12,26 +12,32 @@ import { useCallback } from 'react';
 import { Bar, BarChart, CartesianGrid, Line, LineChart, XAxis, YAxis } from 'recharts';
 import getChartColor from './getChartColor';
 
-export type ChartColorProps = '0' | '1' | '2' | '3' | '4';
-export type ChartYAxisFormatProps = 'b' | 'm';
-export type ChartTypeProps = 'bar' | 'line';
+export type ChartColorType = '0' | '1' | '2' | '3' | '4';
+export type ChartYAxisFormatType = 'b' | 'm';
+export type ChartType = 'bar' | 'line';
 
 type ConfigType = {
   [key: string]: {
     label: string;
-    color?: ChartColorProps;
+    color?: ChartColorType;
   };
 };
 
-type ChartProps = {
-  type?: ChartTypeProps;
+type ChartPropsType = {
+  type?: ChartType;
   dataList?: unknown[];
   config: ConfigType;
   xAxis: string;
-  yAxiosFormat?: ChartYAxisFormatProps;
+  yAxiosFormat?: ChartYAxisFormatType;
 };
 
-export default function Chart({ type, dataList = [], config, xAxis, yAxiosFormat }: ChartProps) {
+export default function Chart({
+  type,
+  dataList = [],
+  config,
+  xAxis,
+  yAxiosFormat,
+}: ChartPropsType) {
   const ChartElementList = useCallback(() => {
     return Object.keys(config).map((key, idx) => {
       const color = config[key].color;
