@@ -1,5 +1,6 @@
 import { Noto_Sans_KR } from 'next/font/google';
 import { GoogleAnalytics } from '@next/third-parties/google';
+import Script from 'next/script';
 import './globals.css';
 import Header from '@/components/header/Header';
 import Footer from '@/components/footer/Footer';
@@ -35,9 +36,17 @@ export default async function RootLayout({
   }
 
   return (
-    <html lang="en">
-      <body className={`${notoSansKr.className} antialiased`}>
+    <html lang="ko">
+      <head>
         <GoogleAnalytics gaId="G-W04ZNBZ5X1" />
+        <Script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5062353666072244"
+          crossOrigin="anonymous"
+          strategy="afterInteractive"
+        />
+      </head>
+      <body className={`${notoSansKr.className} antialiased`}>
         <AuthProvider initialUser={user}>
           <Analytics />
           <div className="flex justify-center w-full min-h-dvh">
