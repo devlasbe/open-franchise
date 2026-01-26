@@ -33,7 +33,8 @@
       "Bash(docker rm:*)",
       "Bash(docker run:*)",
       "Bash(curl:*)",
-      "Bash(docker logs:*)"
+      "Bash(docker logs:*)",
+      "Bash(gh pr create:*)"
     ]
   },
   "enableAllProjectMcpServers": true,
