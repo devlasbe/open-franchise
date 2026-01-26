@@ -24,7 +24,7 @@ const fetchService = async <T>({ path, init, isClient }: MyFetchType) => {
     if (!isClient && typeof window === 'undefined') {
       try {
         const { cookies } = await import('next/headers');
-        const cookieStore = cookies();
+        const cookieStore = await cookies();
         const cookieString = cookieStore.toString();
 
         if (cookieString) {
