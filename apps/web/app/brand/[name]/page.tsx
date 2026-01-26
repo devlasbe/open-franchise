@@ -10,12 +10,13 @@ import { SeoUtil } from '@/utils/seo';
 import CommentSection from './comments/CommentSection';
 
 type BrandPageParamsType = {
-  params: {
+  params: Promise<{
     name: string;
-  };
+  }>;
 };
 
-export async function generateMetadata({ params: { name } }: BrandPageParamsType) {
+export async function generateMetadata({ params }: BrandPageParamsType) {
+  const { name } = await params;
   try {
     const brandResponse = await BrandService.getBrand(name);
     const isRejectedBrand = brandResponse?.payload?.isRejectedBrand;
@@ -42,7 +43,8 @@ const RejectedBrand = () => {
   );
 };
 
-export default function BrandPage({ params: { name } }: BrandPageParamsType) {
+export default async function BrandPage({ params }: BrandPageParamsType) {
+  const { name } = await params;
   return (
     <FetchBoundary>
       <Layout name={name} />

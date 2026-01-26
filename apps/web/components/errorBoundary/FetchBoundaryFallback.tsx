@@ -1,4 +1,5 @@
 import { FallbackProps } from 'react-error-boundary';
+import Link from 'next/link';
 import { Button } from '../ui/button';
 
 export default function FetchBoundaryFunction({ resetErrorBoundary }: FallbackProps) {
@@ -12,7 +13,7 @@ export default function FetchBoundaryFunction({ resetErrorBoundary }: FallbackPr
     <div className="flex flex-1 flex-col justify-center items-center gap-4 min-h-24 p-4 text-center rounded-lg">
       <p className="text-overflow-oneline text-body">{errorMessage}</p>
       <Button asChild onClick={handleReset}>
-        <a href="/">메인 화면으로 이동하기</a>
+        <Link href="/">메인 화면으로 이동하기</Link>
       </Button>
     </div>
   );
